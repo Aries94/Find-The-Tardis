@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 
+
 public class GameCamera {
     GraphicsContext gc;
     int resolution;
@@ -37,12 +38,14 @@ public class GameCamera {
 
     static final double CIRCLE = Math.PI * 2;
 
-    private double EPSILON = 0.0005;
+    private final double  EPSILON = 0.0005;
+    private boolean debug;
 
 
-    public GameCamera(GraphicsContext gc, int resolution, double fov) {
+    public GameCamera(GraphicsContext gc, int resolution, double fov, boolean debug) {
         this.resolution = (resolution > 5 && resolution < MAX_RESOLUTION) ? resolution : MAX_RESOLUTION;
         this.gc = gc;
+        this.debug=debug;
         cosAngelAngel = Math.cos(fov / 1.5);
         prPlane = new PrPlane(gc.getCanvas().getWidth(), gc.getCanvas().getHeight(), fov);
     }
@@ -160,9 +163,11 @@ public class GameCamera {
 
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
-            gc.setGlobalAlpha(distance<SHADING_DISTANCE?distance/SHADING_DISTANCE:1.0);
-            gc.fillRect(startX,startY,width,height);
+        if(!debug) {
+            gc.setGlobalAlpha(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0);
+            gc.fillRect(startX, startY, width, height);
             gc.setGlobalAlpha(1.0);
+        }
 
     }
 
@@ -214,9 +219,11 @@ public class GameCamera {
 
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
-            gc.setGlobalAlpha(distance<SHADING_DISTANCE?distance/SHADING_DISTANCE:1.0);
-            gc.drawImage(Resources.Textures.DARK_ANGEL,texture_startX,texture_startY,texture_width,texture_height,startX,startY,width,height);
+        if (!debug) {
+            gc.setGlobalAlpha(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0);
+            gc.drawImage(Resources.Textures.DARK_ANGEL, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
             gc.setGlobalAlpha(1.0);
+        }
     }
 
     boolean buildColumn(Maze maze, Player player, int number, double alpha_angle, double distance_Ang_Pla) {
@@ -233,7 +240,7 @@ public class GameCamera {
                 angelIsOnSight = true;
             }
         }
-        if (distance>0.3)
+        if (distance>0.3 && !debug)
             drawRain(number);
         return angelIsOnSight;
     }

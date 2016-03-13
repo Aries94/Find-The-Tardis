@@ -21,6 +21,8 @@ public class Game extends Application {
     GameLoop gameLoop;
     Angel angel;
 
+    private boolean DEBUG = true;
+
     final private double END_GAME_RANGE =0.3;
     private boolean paused  =false;
 
@@ -33,7 +35,8 @@ public class Game extends Application {
     }
 
     public void init_actions(){
-        maze = new Maze(25);
+        if (DEBUG) DEBUG=true;
+        maze = DEBUG? new Maze():new Maze(25);
         tardis = new Tardis(maze);
         player = new Player(maze, tardis);
         angel = new Angel(maze);
@@ -61,7 +64,7 @@ public class Game extends Application {
         Canvas canvas = new Canvas(700, 700);
         gc = canvas.getGraphicsContext2D();
 
-        gameCamera = new GameCamera(gc, 350, player.FIELD_OF_VIEW);
+        gameCamera = new GameCamera(gc, 350, player.FIELD_OF_VIEW,DEBUG);
 
         gameLoop = new GameLoop();
         gameLoop.start();
