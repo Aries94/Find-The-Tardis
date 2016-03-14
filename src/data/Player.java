@@ -1,5 +1,6 @@
 package data;
 
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;
@@ -11,6 +12,8 @@ public class Player {
 
     public final double FIELD_OF_VIEW = Math.toRadians(100);
     double point_of_view = Math.toRadians(0);
+
+    final Image weapon = Resources.Textures.SONIC;
 
 
     public Player(Maze maze, Tardis tardis){
@@ -44,6 +47,8 @@ public class Player {
         }else if(maze.map[(int)newX][(int)coords.y]==Resources.Blocks.EMPTY){
             coords.x = newX;
         }
+
+        GameCamera.weaponAngle+=0.1;
     }
 
     void rotate(boolean toTheLeft){

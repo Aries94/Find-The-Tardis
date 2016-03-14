@@ -259,6 +259,8 @@ public class GameCamera {
             if (buildColumn(maze, player, i, alpha_angle, distance_Ang_Pla))
                 angel.isOnSight = true;
         }
+
+        drawWeapon(player);
        // Runtime.getRuntime().gc();
        // System.out.println(System.currentTimeMillis()-time);
     }
@@ -308,5 +310,22 @@ public class GameCamera {
         gc.fillText("Quit?     [2]",prPlane.width/2-message.length()/2,prPlane.height/3+75);
     }
 
+
+    static double weaponAngle=0;
+
+    private void drawWeapon (Player player){
+        Image weapon = player.weapon;
+
+        double width= 0.7*weapon.getWidth();
+        double height = 0.7*weapon.getHeight();
+
+        double startX=prPlane.width-width+30+15*Math.cos(weaponAngle);
+        double startY=prPlane.height-height+10*Math.abs(Math.sin(weaponAngle));
+
+        //weaponAngle+=0.1;
+
+
+        gc.drawImage(weapon,startX,startY,width,height);
+    }
 
 }

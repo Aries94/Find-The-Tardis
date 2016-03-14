@@ -14,6 +14,7 @@ public class Resources {
         final static Image TARDIS = new Image("/resources/tardis_main.png");
         final static Image ANGEL = new Image("/resources/angel.png");
         final static Image DARK_ANGEL = new Image("/resources/black_angel.png");
+        final static Image SONIC = new Image("/resources/sonic_11.png");
     }
     class Heights {
         final static double WALL = 2;

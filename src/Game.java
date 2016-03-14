@@ -21,7 +21,7 @@ public class Game extends Application {
     GameLoop gameLoop;
     Angel angel;
 
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
 
     final private double END_GAME_RANGE =0.3;
     private boolean paused  =false;
