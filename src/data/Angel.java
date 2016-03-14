@@ -6,7 +6,7 @@ public class Angel {
     enum States {Wandering, Hunting, OnSight}
 
     States state;
-    final double HUNTING_RANGE = 2;
+    final double HUNTING_RANGE = 6;
     final int COOLDOWN = 1000; //milliseconds;
     final static double HALFWIDTH = 0.5;
     long time;
@@ -19,20 +19,30 @@ public class Angel {
     }
 
     private void wander(GameCamera gameCamera, Maze maze, Player player) {
-        Maze.Coords coords;
+        Maze.Coords falseCoords;
         do {
-            coords = maze.lookForEmpty();
-            coords.x += 0.5;
-            coords.y += 0.5;
-        } while (near(player) || gameCamera.falseScreen(maze, player, coords));
-        this.coords=coords;
+            falseCoords = maze.lookForEmpty();
+            falseCoords.x += 0.5;
+            falseCoords.y += 0.5;
+        } while (near(player) || gameCamera.falseScreen(maze, player, falseCoords));
+        this.coords=falseCoords;
     }
 
     boolean near(Player player) {
         return (HUNTING_RANGE > Maze.distenceBetween(coords, player.coords));
     }
 
-    void move(Maze.Coords coords, Maze maze) {
+    private void hunt(GameCamera gameCamera, Maze maze, Player player){
+        double newDistance = 3.0/4.0*Maze.distenceBetween(coords,player.coords);
+        double angle;
+        int count = 30;
+        Maze.Coords falseCoords= new Maze.Coords(maze,3,3);
+        do{
+            angle=Math.random()*GameCamera.CIRCLE;
+            falseCoords.x=player.coords.x+newDistance*Math.cos(angle);
+            falseCoords.y=player.coords.y+newDistance*Math.sin(angle);
+        }while(count--==0 || gameCamera.falseScreen(maze,player,falseCoords)|| !maze.validCoords(falseCoords) || (maze.map[(int)falseCoords.x][(int)falseCoords.y]!=Resources.Blocks.EMPTY));
+        if (count>0)coords=falseCoords;
 
     }
 
@@ -46,6 +56,10 @@ public class Angel {
                 }
                 break;
             case Hunting:
+                if (System.currentTimeMillis() - time > COOLDOWN) {
+                    hunt(gameCamera,maze, player);
+                    time = System.currentTimeMillis();
+                }
                 break;
             default:
                 break;

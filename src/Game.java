@@ -73,7 +73,7 @@ public class Game extends Application {
         gameLoop.setOnSucceeded((WorkerStateEvent event) -> {
             gameLoop.restart();
             try {
-                Thread.sleep(20);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

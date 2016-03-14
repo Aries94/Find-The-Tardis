@@ -247,6 +247,7 @@ public class GameCamera {
 
 
     public void buildScreen(Maze maze, Player player, Angel angel) {
+       // long time = System.currentTimeMillis();
         gc.drawImage(Resources.Textures.SKY, 0, 0);
 
         double distance_Ang_Pla = Maze.distenceBetween(player.coords, angel.coords);
@@ -258,6 +259,8 @@ public class GameCamera {
             if (buildColumn(maze, player, i, alpha_angle, distance_Ang_Pla))
                 angel.isOnSight = true;
         }
+       // Runtime.getRuntime().gc();
+       // System.out.println(System.currentTimeMillis()-time);
     }
 
 

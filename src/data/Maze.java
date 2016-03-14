@@ -61,6 +61,11 @@ public class Maze{
         return new Coords(this,x,y);
     }
 
+
+    boolean validCoords(Coords coords){
+        return (coords.x>1&&coords.x<size-1&&coords.y>1&&coords.y<size-1);
+    }
+
     boolean pathExists (int x1, int y1, int x2, int y2){
         if (map[x1][y1] == Resources.Blocks.WALL || map[x2][y2]==Resources.Blocks.WALL || ( x1 != x2&& y1 !=y2)) return false;
 
