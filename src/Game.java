@@ -19,11 +19,12 @@ public class Game extends Application {
     Tardis tardis;
     GameCamera gameCamera;
     GameLoop gameLoop;
-    Angel angel;
+    Angel[] angels;
 
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
 
     final private double END_GAME_RANGE =0.3;
+
     private boolean paused  =false;
 
     HashSet<KeyCode> keySet;
@@ -39,7 +40,10 @@ public class Game extends Application {
         maze = DEBUG? new Maze():new Maze(25);
         tardis = new Tardis(maze);
         player = new Player(maze, tardis);
-        angel = new Angel(maze);
+        angels = new Angel[Angel.NUMBER_OF_ANGELS];
+        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
+            angels[i]=new Angel(maze);
+        }
         paused=false;
     }
 
@@ -48,12 +52,12 @@ public class Game extends Application {
     }
 
     public void start(Stage stage) {
-        stage.setTitle("Find the data.Tardis");
+        stage.setTitle("Find the Tardis");
 
         stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
 
         FlowPane rootNode = new FlowPane();
-        Scene scene = new Scene(rootNode, 700, 700);
+        Scene scene = new Scene(rootNode, 1200, 675);
         stage.setScene(scene);
 
         keySet = new HashSet<>();
@@ -61,10 +65,10 @@ public class Game extends Application {
         scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
 
 
-        Canvas canvas = new Canvas(700, 700);
+        Canvas canvas = new Canvas(1200, 675);
         gc = canvas.getGraphicsContext2D();
 
-        gameCamera = new GameCamera(gc, 350, player.FIELD_OF_VIEW,DEBUG);
+        gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW,DEBUG);
 
         gameLoop = new GameLoop();
         gameLoop.start();
@@ -93,11 +97,10 @@ public class Game extends Application {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-
                     if (!paused) {
                         player.update(keySet, maze);
-                        gameCamera.buildScreen(maze, player, angel);
-                        angel.update(gameCamera, maze, player);
+                        gameCamera.buildScreen(maze, player, angels);
+                        Angel.update(angels,gameCamera, maze, player);
                     }
                     if (Maze.distenceBetween(player.coords,tardis.coords)<END_GAME_RANGE*2){
                         paused=true;
@@ -105,7 +108,9 @@ public class Game extends Application {
                         endGameUpdate(keySet);
 
                     }
-                    if (Maze.distenceBetween(player.coords,angel.coords)<END_GAME_RANGE){
+                    double nearestAngelDist = Double.POSITIVE_INFINITY;
+                    for (Angel angel :angels) nearestAngelDist = Math.min(nearestAngelDist,Maze.distenceBetween(player.coords,angel.coords));
+                    if (nearestAngelDist<END_GAME_RANGE){
                         paused=true;
                         gameCamera.endGameScreen("You lose!");
                         endGameUpdate(keySet);

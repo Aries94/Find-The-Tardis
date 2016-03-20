@@ -7,10 +7,11 @@ public class Angel {
 
     States state;
     final double HUNTING_RANGE = 6;
-    final int COOLDOWN = 1000; //milliseconds;
-    final static double HALFWIDTH = 0.5;
+    final static int COOLDOWN = 1000; //milliseconds;
+    final static double HALFWIDTH = 0.2;
     long time;
     boolean isOnSight = false;
+    public final static int NUMBER_OF_ANGELS = 2;
 
     public Angel(Maze maze) {
         coords = new Maze.Coords(maze, 5.5, 5.5);
@@ -46,23 +47,25 @@ public class Angel {
 
     }
 
-    public void update(GameCamera gameCamera, Maze maze, Player player) {
-        state = isOnSight ? States.OnSight : (near(player) ? States.Hunting : States.Wandering);
-        switch (state) {
-            case Wandering:
-                if (System.currentTimeMillis() - time > COOLDOWN) {
-                    wander(gameCamera,maze, player);
-                    time = System.currentTimeMillis();
-                }
-                break;
-            case Hunting:
-                if (System.currentTimeMillis() - time > COOLDOWN) {
-                    hunt(gameCamera,maze, player);
-                    time = System.currentTimeMillis();
-                }
-                break;
-            default:
-                break;
+    public static void update(Angel[] angels,GameCamera gameCamera, Maze maze, Player player) {
+        for (Angel angel : angels ) {
+            angel.state = angel.isOnSight ? States.OnSight : (angel.near(player) ? States.Hunting : States.Wandering);
+            switch (angel.state) {
+                case Wandering:
+                    if (System.currentTimeMillis() - angel.time > COOLDOWN) {
+                        angel.wander(gameCamera, maze, player);
+                        angel.time = System.currentTimeMillis();
+                    }
+                    break;
+                case Hunting:
+                    if (System.currentTimeMillis() - angel.time > COOLDOWN) {
+                        angel.hunt(gameCamera, maze, player);
+                        angel.time = System.currentTimeMillis();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
