@@ -234,15 +234,17 @@ public class GameCamera {
 
         double angle = Math.atan2(prPlane.columnWidth * number - prPlane.width / 2, prPlane.distance);
 
+        int[] sortedAngel = sort(distance_Ang_Pla);
+
         Ray ray = new Ray((player.point_of_view - angle + CIRCLE) % CIRCLE, maze, player.coords);
 
         double distance = drawColumn(ray, number, angle);
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS ; i++) {
-            if ((distance_Ang_Pla[i] < distance) && (Math.cos(alpha_angle[i] - player.point_of_view) > cosAngelAngel)) {
-                angelOffset[i] = distance_Ang_Pla[i] * Math.sin(ray.angle - alpha_angle[i]);
-                if (Math.abs(angelOffset[i]) < Angel.HALFWIDTH) {
-                    drawAngel(number, angelOffset[i], distance_Ang_Pla[i] * Math.cos(ray.angle - alpha_angle[i]));
-                    onSight[i] = true;
+            if ((distance_Ang_Pla[sortedAngel[i]] < distance) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
+                angelOffset[sortedAngel[i]] = distance_Ang_Pla[sortedAngel[i]] * Math.sin(ray.angle - alpha_angle[sortedAngel[i]]);
+                if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
+                    drawAngel(number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]]/**/ * Math.cos(ray.angle - alpha_angle[sortedAngel[i]])/**/*Math.cos(ray.angle - player.point_of_view));
+                    onSight[sortedAngel[i]] = true;
                 }
             }
         }
@@ -251,6 +253,23 @@ public class GameCamera {
         return onSight;
     }
 
+    private int[] sort(double[] array) {
+        int[] result = new int[Angel.NUMBER_OF_ANGELS];
+        int temp;
+        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
+            result[i]=i;
+        }
+        for (int i = 0; i < Angel.NUMBER_OF_ANGELS-1; i++) {
+            for (int j = 0; j < Angel.NUMBER_OF_ANGELS-1-i; j++) {
+                if (array[result[j]]<array[result[j+1]]){
+                    temp = result[j];
+                    result[j]=result[j+1];
+                    result[j+1]=temp;
+                }
+            }
+        }
+        return  result;
+    }
 
     public void buildScreen(Maze maze, Player player, Angel[] angels) {
         // long time = System.currentTimeMillis();

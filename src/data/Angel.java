@@ -11,7 +11,7 @@ public class Angel {
     final static double HALFWIDTH = 0.2;
     long time;
     boolean isOnSight = false;
-    public final static int NUMBER_OF_ANGELS = 2;
+    public final static int NUMBER_OF_ANGELS = 5;
 
     public Angel(Maze maze) {
         coords = new Maze.Coords(maze, 5.5, 5.5);

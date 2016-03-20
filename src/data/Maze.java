@@ -7,6 +7,7 @@ import java.util.*;
 public class Maze{
     int size;
     int[][] map;
+    private final int MAX_SIZE = 400;
 
     static class Coords {
         double x;
@@ -26,7 +27,7 @@ public class Maze{
     }
 
     public Maze(int size){
-        this.size=(size > 2)&&(size<200)? size:10;
+        this.size=(size > 5)&&(size<MAX_SIZE)? size:10;
         map=new int[size][size];
         defaultMaze();
         randoMaze();

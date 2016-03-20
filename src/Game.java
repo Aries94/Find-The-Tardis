@@ -21,7 +21,7 @@ public class Game extends Application {
     GameLoop gameLoop;
     Angel[] angels;
 
-    private boolean DEBUG = true;
+    private boolean DEBUG =false;
 
     final private double END_GAME_RANGE =0.3;
 
@@ -37,7 +37,7 @@ public class Game extends Application {
 
     public void init_actions(){
         if (DEBUG) DEBUG=true;
-        maze = DEBUG? new Maze():new Maze(25);
+        maze = DEBUG? new Maze():new Maze(20);
         tardis = new Tardis(maze);
         player = new Player(maze, tardis);
         angels = new Angel[Angel.NUMBER_OF_ANGELS];
