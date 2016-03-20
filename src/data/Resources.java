@@ -8,7 +8,8 @@ public class Resources {
         final static int WALL = 1;
         final static int TARDIS = 2;
     }
-    static  class Textures {
+
+    static class Textures {
         final static Image SKY = new Image("/resources/deathvalley_panorama.jpg");
         final static Image WALL = new Image("/resources/wall_texture.jpg");
         final static Image TARDIS = new Image("/resources/tardis_main.png");
@@ -16,6 +17,7 @@ public class Resources {
         final static Image DARK_ANGEL = new Image("/resources/angel2_black.png");
         final static Image SONIC = new Image("/resources/sonic_11.png");
     }
+
     class Heights {
         final static double WALL = 5;
         final static double TARDIS = 2.4;
@@ -23,7 +25,7 @@ public class Resources {
         final static double PLAYER = 1;
     }
 
-    static double mod (double a, double b){
-        return a<0? mod(a+b,b): a%b<0? a%b+b:a%b;
+    static double mod(double a, double b) {
+        return a < 0 ? mod(a + b, b) : a % b < 0 ? a % b + b : a % b;
     }
 }
