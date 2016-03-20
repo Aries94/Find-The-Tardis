@@ -243,7 +243,7 @@ public class GameCamera {
             if ((distance_Ang_Pla[sortedAngel[i]] < distance) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
                 angelOffset[sortedAngel[i]] = distance_Ang_Pla[sortedAngel[i]] * Math.sin(ray.angle - alpha_angle[sortedAngel[i]]);
                 if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
-                    drawAngel(number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]]/**/ * Math.cos(ray.angle - alpha_angle[sortedAngel[i]])/**/*Math.cos(ray.angle - player.point_of_view));
+                    drawAngel(number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]]*Math.cos(ray.angle - player.point_of_view));
                     onSight[sortedAngel[i]] = true;
                 }
             }
