@@ -231,7 +231,7 @@ public class GameCamera {
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
         if (!debug) {
-            gc.setGlobalAlpha(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0);
+            gc.setGlobalAlpha(Math.min(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0,alpha));
             gc.drawImage(Resources.Textures.DARK_ANGEL, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
         }
