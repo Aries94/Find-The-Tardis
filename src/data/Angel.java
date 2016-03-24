@@ -1,9 +1,9 @@
 package data;
 
 public class Angel {
-    public final static int NUMBER_OF_ANGELS = 5;
+    public final static int NUMBER_OF_ANGELS =5;
 
-    final private double HUNTING_RANGE = 6;
+    final static public double HUNTING_RANGE = 6;
     final static int COOLDOWN = 1000; //milliseconds;
     final static double HALFWIDTH = 0.2;
 
@@ -12,6 +12,7 @@ public class Angel {
     protected boolean isOnSight = false;
     public Maze.Coords coords;
     public States state;
+    public double alpha_angle;
 
     private long time;
 
@@ -23,33 +24,47 @@ public class Angel {
     }
 
 
-    private void wander(GameCamera gameCamera, Maze maze, Player player) {
+    private void wander(GameCamera gameCamera, Maze maze, Player player, Angel[] angels) {
         Maze.Coords falseCoords;
+        boolean nearOtherAngel;
         do {
             falseCoords = maze.lookForEmpty();
             falseCoords.x += 0.5;
             falseCoords.y += 0.5;
-        } while (near(player) || gameCamera.falseScreen(maze, player, falseCoords));
+            nearOtherAngel =false;
+            for (Angel angel:angels) nearOtherAngel = nearOtherAngel || near(angel, falseCoords);
+        } while (near(player,falseCoords,HALFWIDTH*2) || nearOtherAngel || gameCamera.falseScreen(maze, player, falseCoords));
         this.coords = falseCoords;
     }
 
 
-    boolean near(Player player) {
-        return (HUNTING_RANGE > Maze.distenceBetween(coords, player.coords));
+    boolean near(Player player, Maze.Coords falseCoords) {
+        return (HUNTING_RANGE > Maze.distenceBetween(falseCoords, player.coords));
+    }
+
+    boolean near(Player player, Maze.Coords falseCoords, double range) {
+        return (range > Maze.distenceBetween(falseCoords, player.coords));
+    }
+
+    boolean near(Angel angel, Maze.Coords falseCoords){
+        return ( !this.equals(angel) &&  HALFWIDTH > Maze.distenceBetween(falseCoords,angel.coords));
     }
 
 
-    private void hunt(GameCamera gameCamera, Maze maze, Player player) {
+    private void hunt(GameCamera gameCamera, Maze maze, Player player, Angel[] angels) {
         double newDistance = 3.0 / 4.0 * Maze.distenceBetween(coords, player.coords);
+        double angleBehind = alpha_angle-GameCamera.CIRCLE/4;
         double angle;
         int count = 30;
         Maze.Coords falseCoords = new Maze.Coords(maze, 3, 3);
         do {
-            angle = Math.random() * GameCamera.CIRCLE;
+            if (count==0)break;
+            angle = angleBehind+Math.random() * GameCamera.CIRCLE/2;
             falseCoords.x = player.coords.x + newDistance * Math.cos(angle);
             falseCoords.y = player.coords.y + newDistance * Math.sin(angle);
+            count--;
         }
-        while (count-- == 0 || gameCamera.falseScreen(maze, player, falseCoords) || !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.EMPTY));
+        while ( gameCamera.falseScreen(maze, player, falseCoords) || !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.EMPTY));
         if (count > 0) coords = falseCoords;
 
     }
@@ -57,17 +72,17 @@ public class Angel {
 
     public static void update(Angel[] angels, GameCamera gameCamera, Maze maze, Player player) {
         for (Angel angel : angels) {
-            angel.state = angel.isOnSight ? States.OnSight : (angel.near(player) ? States.Hunting : States.Wandering);
+            angel.state = angel.isOnSight ? States.OnSight : (angel.near(player,angel.coords) ? States.Hunting : States.Wandering);
             switch (angel.state) {
                 case Wandering:
                     if (System.currentTimeMillis() - angel.time > COOLDOWN) {
-                        angel.wander(gameCamera, maze, player);
+                        angel.wander(gameCamera, maze, player,angels);
                         angel.time = System.currentTimeMillis();
                     }
                     break;
                 case Hunting:
                     if (System.currentTimeMillis() - angel.time > COOLDOWN) {
-                        angel.hunt(gameCamera, maze, player);
+                        angel.hunt(gameCamera, maze, player,angels);
                         angel.time = System.currentTimeMillis();
                     }
                     break;

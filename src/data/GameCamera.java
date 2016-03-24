@@ -12,7 +12,7 @@ public class GameCamera {
 
     final private int MAX_RESOLUTION = 900;
     final private int MAX_VIEW_DISTANCE = 20;
-    final private double SHADING_DISTANCE = 3;
+    final private double SHADING_DISTANCE = 4;
     final private int MIN_RAINDROPS = 0;
     final private int MAX_RAINDROPS = 1;
     final private double EPSILON = 0.0005;
@@ -62,7 +62,6 @@ public class GameCamera {
             this.angle = angle;
             cast(maze, startPoint, 0);
         }
-
 
         class RayPoint {
             double distance;
@@ -170,10 +169,12 @@ public class GameCamera {
         gc.setGlobalAlpha(alpha);
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
-        if (!debug) {
+        gc.setFill(Color.BLACK);
+
+       // if (!debug) {
             gc.setGlobalAlpha(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0);
             gc.fillRect(startX, startY, width, height);
-        }
+        //}
         gc.setGlobalAlpha(1.0);
 
     }
@@ -251,7 +252,7 @@ public class GameCamera {
 
         double[] distance = drawColumn(ray, number, angle);
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            if ((distance_Ang_Pla[sortedAngel[i]] < distance[0]) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
+            if ((distance_Ang_Pla[i]<SHADING_DISTANCE)&&(distance_Ang_Pla[sortedAngel[i]] < distance[0]) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
                 angelOffset[sortedAngel[i]] = distance_Ang_Pla[sortedAngel[i]] * Math.sin(ray.angle - alpha_angle[sortedAngel[i]]);
                 if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
                     //double angel_alpha=distance[1]<Double.POSITIVE_INFINITY?(distance[1]<distance_Ang_Pla[i]? 0:Tardis.alpha):1.0;
@@ -288,7 +289,7 @@ public class GameCamera {
 
     public void buildScreen(Maze maze, Player player, Angel[] angels) {
         // long time = System.currentTimeMillis();
-        gc.drawImage(Resources.Textures.SKY, 0, 0);
+        gc.drawImage(Resources.Textures.SKY, 0, 0,Resources.Textures.SKY.getWidth(),Resources.Textures.SKY.getHeight(),0,0,prPlane.width,prPlane.height);
 
         double[] distance_Ang_Pla = new double[Angel.NUMBER_OF_ANGELS];
         double[] alpha_angle = new double[Angel.NUMBER_OF_ANGELS];
@@ -297,9 +298,9 @@ public class GameCamera {
             // System.out.println(i);
             distance_Ang_Pla[i] = Maze.distenceBetween(player.coords, angels[i].coords);
             //System.out.println(i);
-            alpha_angle[i] = Math.acos((angels[i].coords.x - player.coords.x) / distance_Ang_Pla[i]) * (angels[i].coords.y - player.coords.y < 0 ? -1 : 1);
+            angels[i].alpha_angle= alpha_angle[i] = Math.acos((angels[i].coords.x - player.coords.x) / distance_Ang_Pla[i]) * (angels[i].coords.y - player.coords.y < 0 ? -1 : 1);
 
-            alpha_angle[i] = (alpha_angle[i] + CIRCLE) % CIRCLE;
+            //alpha_angle[i] = (alpha_angle[i] + CIRCLE) % CIRCLE;
             angels[i].isOnSight = false;
         }
         for (int i = 0; i < resolution; i++) {
@@ -336,7 +337,7 @@ public class GameCamera {
                 ray.rayPoints[Resources.Blocks.WALL] != null ? ray.rayPoints[Resources.Blocks.WALL].distance :
                         Double.POSITIVE_INFINITY;
 
-        if ((distance_Ang_Pla < distance) && (Math.cos(alpha_angle - player.point_of_view) > cosAngelAngel)) {
+        if ((distance_Ang_Pla<SHADING_DISTANCE)&&(distance_Ang_Pla < distance) && (Math.cos(alpha_angle - player.point_of_view) > cosAngelAngel)) {
             double angel_offset = distance_Ang_Pla * Math.sin(ray.angle - alpha_angle);
             if (Math.abs(angel_offset) < Angel.HALFWIDTH) {
                 angelIsOnSight = true;
@@ -346,7 +347,7 @@ public class GameCamera {
     }
 
 
-    public void endGameScreen(String message) {
+    public void endGameScreen(String message, int vc, int dc) {
         gc.setFill(Color.BLACK);
         gc.setGlobalAlpha(1.0);
 
@@ -357,6 +358,9 @@ public class GameCamera {
 
         gc.fillText("Restart?  [1]", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 50);
         gc.fillText("Quit?     [2]", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 75);
+
+        gc.fillText("You   : "+Integer.toString(vc),prPlane.width*3/4,prPlane.height*3/4);
+        gc.fillText("Angels: "+Integer.toString(dc),prPlane.width*3/4,prPlane.height*3/4+20);
     }
 
 

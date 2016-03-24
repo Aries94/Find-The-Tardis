@@ -4,16 +4,23 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.concurrent.*;
 import java.util.HashSet;
 
+//TODO sound;
+//TODO sonic screwdriver functions;
+//TODO more angel textures;
+
 public class Game extends Application {
     final private double END_GAME_RANGE = 0.3;
 
-    private boolean DEBUG = false;
+    private boolean debug = false;
     private boolean paused = false;
+    private int victory_counter = 0;
+    private int defeat_counter = 0;
     private Maze maze;
     private Player player;
     private Tardis tardis;
@@ -30,9 +37,9 @@ public class Game extends Application {
 
 
     public void init_actions() {
-        if (DEBUG) DEBUG = true;
-        maze = DEBUG ? new Maze() : new Maze(20);
-        tardis = new Tardis(maze, DEBUG);
+        if (debug) debug = true;
+        maze = debug ? new Maze() : new Maze(40);
+        tardis = new Tardis(maze, debug);
         player = new Player(maze, tardis);
         angels = new Angel[Angel.NUMBER_OF_ANGELS];
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
@@ -63,13 +70,16 @@ public class Game extends Application {
         Canvas canvas = new Canvas(1200, 675);
         gc = canvas.getGraphicsContext2D();
 
-        gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, DEBUG);
+        gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, debug);
 
         gameLoop = new GameLoop();
         gameLoop.start();
 
         gameLoop.setOnSucceeded((WorkerStateEvent event) -> {
-            gameLoop.restart();
+            try {
+                gameLoop.restart();
+            }
+            catch (Exception e){ System.out.println(1);}
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -95,17 +105,23 @@ public class Game extends Application {
                         tardis.update(keySet, maze, player);
                     }
                     if (Maze.distenceBetween(player.coords, tardis.coords) < END_GAME_RANGE * 2 && tardis.isHere) {
+                        if (!paused) victory_counter++;
                         paused = true;
-                        gameCamera.endGameScreen("You won!");
+                        gameCamera.endGameScreen("You won!",victory_counter,defeat_counter);
                         endGameUpdate(keySet);
 
                     }
                     double nearestAngelDist = Double.POSITIVE_INFINITY;
                     for (Angel angel : angels)
                         nearestAngelDist = Math.min(nearestAngelDist, Maze.distenceBetween(player.coords, angel.coords));
+                    if (nearestAngelDist <Angel.HUNTING_RANGE) {
+                        gc.setFill(Color.RED);
+                        gc.fillText("DANGER! "+Double.toString(nearestAngelDist),20,20);
+                    }
                     if (nearestAngelDist < END_GAME_RANGE) {
+                        if (!paused) defeat_counter++;
                         paused = true;
-                        gameCamera.endGameScreen("You lose!");
+                        gameCamera.endGameScreen("You lose!",victory_counter,defeat_counter);
                         endGameUpdate(keySet);
                     }
                     return null;
@@ -117,6 +133,7 @@ public class Game extends Application {
         private void endGameUpdate(HashSet<?> keySet) {
             if (keySet.contains(KeyCode.DIGIT1)) {
                 init_actions();
+
             }
             if (keySet.contains(KeyCode.DIGIT2)) {
                 Platform.exit();
