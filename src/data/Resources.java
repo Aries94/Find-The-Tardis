@@ -14,8 +14,9 @@ public class Resources {
         final static Image WALL = new Image("/resources/wall_texture.jpg");
         final static Image TARDIS = new Image("/resources/tardis_main.png");
         final static Image ANGEL = new Image("/resources/angel2.png");
-        final public static Image DARK_ANGEL = new Image("/resources/angel2_black.png");
+        final static Image DARK_ANGEL = new Image("/resources/angel2_black.png");
         final static Image SONIC = new Image("/resources/sonic_11.png");
+        final static Image MAIN_MENU = new Image("resources/main_menu.jpg");
     }
 
     class Heights {

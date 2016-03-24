@@ -19,6 +19,7 @@ public class Game extends Application {
 
     private boolean debug = false;
     private boolean paused = false;
+    private boolean inMenu = true;
     private int victory_counter = 0;
     private int defeat_counter = 0;
     private long time;
@@ -27,6 +28,7 @@ public class Game extends Application {
     private Tardis tardis;
     private GameCamera gameCamera;
     private GameLoop gameLoop;
+    private MainMenuLoop mainMenuLoop;
     private Angel[] angels;
     private HashSet<KeyCode> keySet;
     private GraphicsContext gc;
@@ -39,7 +41,7 @@ public class Game extends Application {
 
     public void init_actions() {
         if (debug) debug = true;
-        maze = debug ? new Maze() : new Maze(40);
+        maze = debug ? new Maze() : new Maze(200);
         tardis = new Tardis(maze, debug);
         player = new Player(maze, tardis);
         angels = new Angel[Angel.NUMBER_OF_ANGELS];
@@ -47,6 +49,7 @@ public class Game extends Application {
             angels[i] = new Angel(maze);
         }
         paused = false;
+        inMenu=false;
     }
 
 
@@ -74,33 +77,45 @@ public class Game extends Application {
         gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, debug);
 
         gameLoop = new GameLoop();
+        mainMenuLoop = new MainMenuLoop();
 
 
-        gameLoop.setOnSucceeded((WorkerStateEvent event) -> {
-            try {
-                gameLoop.restart();
-            }
-            catch (Exception e){ System.out.println(1);}
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
         time=System.currentTimeMillis();
-        gameLoop.start();
+
+        inMenu=true;
+        mainMenuLoop.start();
         rootNode.getChildren().add(canvas);
         stage.show();
     }
 
 
     private class GameLoop extends Service<Void> {
+
+        GameLoop(){
+            setOnSucceeded((WorkerStateEvent event) -> {
+                try {
+                    if (!inMenu) restart();
+                    else mainMenuLoop.restart();
+                }
+                catch (Exception e){ System.out.println("GameLoop setOnSucceeded");}
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
+        }
+
+
+
         @Override
         protected Task<Void> createTask() {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                //    time=System.currentTimeMillis();
+                    //    time=System.currentTimeMillis();
                     if (!paused) {
                         player.update(keySet, maze);
                         gameCamera.buildScreen(maze, player, angels);
@@ -110,31 +125,33 @@ public class Game extends Application {
                     if (Maze.distenceBetween(player.coords, tardis.coords) < END_GAME_RANGE * 2 && tardis.isHere) {
                         if (!paused) victory_counter++;
                         paused = true;
-                        gameCamera.endGameScreen("You won!",victory_counter,defeat_counter);
-                        endGameUpdate(keySet);
+                        gameCamera.endGameScreen("You won!", victory_counter, defeat_counter);
+                        endGameUpdate();
 
                     }
                     double nearestAngelDist = Double.POSITIVE_INFINITY;
                     for (Angel angel : angels)
                         nearestAngelDist = Math.min(nearestAngelDist, Maze.distenceBetween(player.coords, angel.coords));
-                    if (nearestAngelDist <Angel.HUNTING_RANGE) {
+                    if (nearestAngelDist < Angel.HUNTING_RANGE) {
                         gc.setFill(Color.RED);
-                        gc.fillText("DANGER! "+Double.toString(nearestAngelDist),20,20);
+                        gc.fillText("DANGER! " + Double.toString(nearestAngelDist), 20, 20);
                     }
                     if (nearestAngelDist < END_GAME_RANGE) {
                         if (!paused) defeat_counter++;
                         paused = true;
-                        gameCamera.endGameScreen("You lose!",victory_counter,defeat_counter);
-                        endGameUpdate(keySet);
+                        gameCamera.endGameScreen("You lose!", victory_counter, defeat_counter);
+                        endGameUpdate();
                     }
-                //    System.out.println(System.currentTimeMillis()-time);
+                    //    System.out.println(System.currentTimeMillis()-time);
                     return null;
                 }
+
+
             };
         }
 
 
-        private void endGameUpdate(HashSet<?> keySet) {
+        private void endGameUpdate() {
             if (keySet.contains(KeyCode.DIGIT1)) {
                 init_actions();
 
@@ -142,9 +159,52 @@ public class Game extends Application {
             if (keySet.contains(KeyCode.DIGIT2)) {
                 Platform.exit();
             }
+
+            if (keySet.contains(KeyCode.DIGIT3)){
+                inMenu=true;
+            }
         }
     }
 
+    private class MainMenuLoop extends Service<Void> {
+
+        MainMenuLoop(){
+            setOnSucceeded((WorkerStateEvent event) -> {
+                try {
+                    if (inMenu) restart();
+                    else gameLoop.restart();
+                }
+                catch (Exception e){ System.out.println("MainMenu setOnSucceeded");}
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @Override
+        protected Task<Void> createTask(){
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    gameCamera.menuScreen();
+                    menuUpdate();
+                    victory_counter=defeat_counter=0;
+                    return null;
+                }
+            };
+        }
+
+        private void menuUpdate(){
+            if (keySet.contains(KeyCode.DIGIT1)) {
+                init_actions();
+            }
+            if (keySet.contains(KeyCode.DIGIT2)) {
+                Platform.exit();
+            }
+        }
+    }
 
     public void stop() {
     }

@@ -1,10 +1,11 @@
 package data;
 
 public class Angel {
-    public final static int NUMBER_OF_ANGELS =5;
+    public final static int NUMBER_OF_ANGELS =30;
 
     final static public double HUNTING_RANGE = 6;
     final static int COOLDOWN = 500; //milliseconds;
+    final static int HUNTING_COOLDOWN = 6000;
     final static double HALFWIDTH = 0.2;
 
     public enum States {Wandering, Hunting, OnSight}
@@ -15,6 +16,7 @@ public class Angel {
     public double alpha_angle;
 
     private long time;
+    private long hunting_time;
 
 
     public Angel(Maze maze) {
@@ -78,18 +80,23 @@ public class Angel {
             angel.state = angel.isOnSight ? States.OnSight : (angel.near(player,angel.coords) ? States.Hunting : States.Wandering);
             switch (angel.state) {
                 case Wandering:
-                    if (System.currentTimeMillis() - angel.time > COOLDOWN) {
+                    if (System.currentTimeMillis() - angel.time > COOLDOWN*5) {
                         angel.wander(gameCamera, maze, player,angels);
                         angel.time = System.currentTimeMillis();
+                        angel.hunting_time=System.currentTimeMillis();
                     }
                     break;
                 case Hunting:
-                    if (System.currentTimeMillis() - angel.time > COOLDOWN) {
+                    if (System.currentTimeMillis() -angel.hunting_time > HUNTING_COOLDOWN){
+                        angel.wander(gameCamera,maze,player,angels);
+                        angel.hunting_time=System.currentTimeMillis();
+                    } else if (System.currentTimeMillis() - angel.time > COOLDOWN) {
                         angel.hunt(gameCamera, maze, player,angels);
                         angel.time = System.currentTimeMillis();
                     }
                     break;
                 default:
+                    angel.hunting_time=System.currentTimeMillis();
                     break;
             }
         }
