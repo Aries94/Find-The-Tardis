@@ -252,7 +252,7 @@ public class GameCamera {
 
         double[] distance = drawColumn(ray, number, angle);
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            if ((distance_Ang_Pla[i]<SHADING_DISTANCE)&&(distance_Ang_Pla[sortedAngel[i]] < distance[0]) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
+            if ((distance_Ang_Pla[sortedAngel[i]]<SHADING_DISTANCE)&&(distance_Ang_Pla[sortedAngel[i]] < distance[0]) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
                 angelOffset[sortedAngel[i]] = distance_Ang_Pla[sortedAngel[i]] * Math.sin(ray.angle - alpha_angle[sortedAngel[i]]);
                 if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
                     //double angel_alpha=distance[1]<Double.POSITIVE_INFINITY?(distance[1]<distance_Ang_Pla[i]? 0:Tardis.alpha):1.0;

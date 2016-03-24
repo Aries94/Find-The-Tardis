@@ -21,6 +21,7 @@ public class Game extends Application {
     private boolean paused = false;
     private int victory_counter = 0;
     private int defeat_counter = 0;
+    private long time;
     private Maze maze;
     private Player player;
     private Tardis tardis;
@@ -73,7 +74,7 @@ public class Game extends Application {
         gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, debug);
 
         gameLoop = new GameLoop();
-        gameLoop.start();
+
 
         gameLoop.setOnSucceeded((WorkerStateEvent event) -> {
             try {
@@ -86,7 +87,8 @@ public class Game extends Application {
                 e.printStackTrace();
             }
         });
-
+        time=System.currentTimeMillis();
+        gameLoop.start();
         rootNode.getChildren().add(canvas);
         stage.show();
     }
@@ -98,6 +100,7 @@ public class Game extends Application {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
+                //    time=System.currentTimeMillis();
                     if (!paused) {
                         player.update(keySet, maze);
                         gameCamera.buildScreen(maze, player, angels);
@@ -124,6 +127,7 @@ public class Game extends Application {
                         gameCamera.endGameScreen("You lose!",victory_counter,defeat_counter);
                         endGameUpdate(keySet);
                     }
+                //    System.out.println(System.currentTimeMillis()-time);
                     return null;
                 }
             };

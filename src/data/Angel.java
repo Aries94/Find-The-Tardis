@@ -4,7 +4,7 @@ public class Angel {
     public final static int NUMBER_OF_ANGELS =5;
 
     final static public double HUNTING_RANGE = 6;
-    final static int COOLDOWN = 1000; //milliseconds;
+    final static int COOLDOWN = 500; //milliseconds;
     final static double HALFWIDTH = 0.2;
 
     public enum States {Wandering, Hunting, OnSight}
@@ -52,19 +52,22 @@ public class Angel {
 
 
     private void hunt(GameCamera gameCamera, Maze maze, Player player, Angel[] angels) {
-        double newDistance = 3.0 / 4.0 * Maze.distenceBetween(coords, player.coords);
+        double newDistance = 2.0 / 4.0 * Maze.distenceBetween(coords, player.coords);
         double angleBehind = alpha_angle-GameCamera.CIRCLE/4;
         double angle;
+        boolean nearOtherAngel;
         int count = 30;
         Maze.Coords falseCoords = new Maze.Coords(maze, 3, 3);
         do {
             if (count==0)break;
+            nearOtherAngel =false;
             angle = angleBehind+Math.random() * GameCamera.CIRCLE/2;
             falseCoords.x = player.coords.x + newDistance * Math.cos(angle);
             falseCoords.y = player.coords.y + newDistance * Math.sin(angle);
+            for (Angel angel:angels) nearOtherAngel = nearOtherAngel || near(angel, falseCoords);
             count--;
         }
-        while ( gameCamera.falseScreen(maze, player, falseCoords) || !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.EMPTY));
+        while ( gameCamera.falseScreen(maze, player, falseCoords) || nearOtherAngel|| !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.EMPTY));
         if (count > 0) coords = falseCoords;
 
     }

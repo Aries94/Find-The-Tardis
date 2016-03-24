@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dfe56b73-3657-4d2a-b502-9e48442a57fa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop$1.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/Game.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel$1.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$PrPlane.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$PrPlane.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Textures.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Textures.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/resources/deathvalley_panorama.jpg" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/resources/deathvalley_panorama.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/resources/angel2_black.png" afterPath="$PROJECT_DIR$/src/resources/angel2_black.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/resources/deathvalley_panorama.jpg" afterPath="$PROJECT_DIR$/src/resources/deathvalley_panorama.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray$RayPoint.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray$RayPoint.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.java" afterPath="$PROJECT_DIR$/src/Game.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Angel.java" afterPath="$PROJECT_DIR$/src/data/Angel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/GameCamera.java" afterPath="$PROJECT_DIR$/src/data/GameCamera.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Resources.java" afterPath="$PROJECT_DIR$/src/data/Resources.java" />
     </list>
     <ignored path="FindTheTardis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,8 +45,8 @@
       <file leaf-file-name="Angel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/data/Angel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.1875">
-              <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+            <state vertical-scroll-proportion="-1.0288185">
+              <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -77,7 +66,7 @@
         <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="300" column="49" selection-start-line="300" selection-start-column="49" selection-end-line="300" selection-end-column="49" />
+              <caret line="233" column="8" selection-start-line="233" selection-start-column="8" selection-end-line="233" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -89,7 +78,7 @@
         <entry file="file://$PROJECT_DIR$/src/Game.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="118" column="79" selection-start-line="118" selection-start-column="79" selection-end-line="118" selection-end-column="79" />
+              <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -428,7 +417,13 @@
       <option name="project" value="LOCAL" />
       <updated>1458507456101</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Angels AI improved&#10;Angel_Black texture improved.&#10;Sky texture modified (floor added)">
+      <created>1458847102786</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1458847102786</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -451,7 +446,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5544629" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24914676" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35153583" sideWeight="0.44553706" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36006826" sideWeight="0.44553706" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.49092284" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22844176" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -459,7 +454,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36006826" sideWeight="0.6928896" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33617747" sideWeight="0.6928896" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -487,11 +482,12 @@
     <MESSAGE value="New angel textures." />
     <MESSAGE value="Created tardis.update()&#10;The Tardis can relocate itself after short period of time." />
     <MESSAGE value="Version 1.3a" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 1.3a" />
+    <MESSAGE value="Angels AI improved&#10;Angel_Black texture improved.&#10;Sky texture modified (floor added)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Angels AI improved&#10;Angel_Black texture improved.&#10;Sky texture modified (floor added)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="64" />
+      <option name="time" value="65" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -853,20 +849,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
+    <entry file="file://$PROJECT_DIR$/src/Game.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="300" column="49" selection-start-line="300" selection-start-column="49" selection-end-line="300" selection-end-column="49" />
+          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="118" column="79" selection-start-line="118" selection-start-column="79" selection-end-line="118" selection-end-column="79" />
+          <caret line="233" column="8" selection-start-line="233" selection-start-column="8" selection-end-line="233" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -875,8 +871,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/Angel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.1875">
-          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+        <state vertical-scroll-proportion="-1.0288185">
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
           <folding />
         </state>
       </provider>
