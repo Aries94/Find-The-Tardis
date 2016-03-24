@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class Tardis {
     static public double alpha;
 
-    private final long D_COOLDOWN = 10000;
+    private final long D_COOLDOWN = 120000;
     private final long A_COOLDOWN = 5000;
 
     public boolean isHere;
@@ -35,6 +35,7 @@ public class Tardis {
 
 
     public void update(HashSet<?> keySet, Maze maze, Player player) {
+        //System.out.println(state);
         switch (state) {
             case Standing:
                 if (keySet.contains(KeyCode.E) || (System.currentTimeMillis() - time > D_COOLDOWN && !debug)) {

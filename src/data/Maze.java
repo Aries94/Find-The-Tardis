@@ -79,7 +79,7 @@ public class Maze {
         if (map[x1][y1] == Resources.Blocks.WALL || map[x2][y2] == Resources.Blocks.WALL || (x1 != x2 && y1 != y2))
             return false;
 
-        ArrayDeque<Coords> adq = new ArrayDeque<>();
+        ArrayDeque<Coords> adq = new ArrayDeque<>((size-1)*(size-1));
         boolean[][] visited = new boolean[size][size];
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
