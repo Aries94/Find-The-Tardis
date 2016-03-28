@@ -41,12 +41,12 @@ public class Game extends Application {
 
     public void init_actions() {
         if (debug) debug = true;
-        maze = debug ? new Maze() : new Maze(200);
+        maze = debug ? new Maze() : new Maze(50);
         tardis = new Tardis(maze, debug);
         player = new Player(maze, tardis);
         angels = new Angel[Angel.NUMBER_OF_ANGELS];
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            angels[i] = new Angel(maze);
+            angels[i] = new Angel(maze,i);
         }
         paused = false;
         inMenu=false;

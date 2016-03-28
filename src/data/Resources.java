@@ -13,11 +13,16 @@ public class Resources {
         final static Image SKY = new Image("/resources/deathvalley_panorama.jpg");
         final static Image WALL = new Image("/resources/wall_texture.jpg");
         final static Image TARDIS = new Image("/resources/tardis_main.png");
-        final static Image ANGEL = new Image("/resources/angel2.png");
-        final static Image DARK_ANGEL = new Image("/resources/angel2_black.png");
+        final static Image ANGEL_1 = new Image("/resources/angel2.png"); // textureID=0
+        final static Image DARK_ANGEL_1 = new Image("/resources/angel2_black.png");// textureID=0
         final static Image SONIC = new Image("/resources/sonic_11.png");
         final static Image MAIN_MENU = new Image("resources/main_menu.jpg");
+        final static Image ANGEL_2 = new Image("/resources/angel3.png");//textureID=1
+        final static Image DARK_ANGEL_2 = new Image("/resources/angel3_black.png");//textureID=1
     }
+
+    public static Image[] angelTextures = new Image[]{Textures.ANGEL_1,Textures.ANGEL_2};
+    public static Image[] darkAngelTextures = new Image[]{Textures.DARK_ANGEL_1,Textures.DARK_ANGEL_2};
 
     class Heights {
         final static double WALL = 5;

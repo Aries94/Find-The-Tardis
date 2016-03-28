@@ -231,11 +231,12 @@ public class GameCamera {
     }
 
 
-    private void drawAngel(int number, double offset, double distance, double alpha) {
+    private void drawAngel(int angelNumber, int number, double offset, double distance, double alpha) {
         double startX = prPlane.columnWidth * number;
         double width = prPlane.columnWidth;
 
-        Image texture = Resources.Textures.ANGEL;
+        Image texture = Resources.angelTextures[Angel.textureID[angelNumber]];
+        Image darkTexture = Resources.darkAngelTextures[Angel.textureID[angelNumber]];
 
         double texture_startX = texture.getWidth() * (offset + Angel.HALFWIDTH) / Angel.HALFWIDTH / 2;
         double texture_startY = 0;
@@ -251,7 +252,7 @@ public class GameCamera {
 
         if (!debug) {
             gc.setGlobalAlpha(Math.min(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0,alpha));
-            gc.drawImage(Resources.Textures.DARK_ANGEL, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
+            gc.drawImage(darkTexture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
 
         }
         gc.setGlobalAlpha(1.0);
@@ -279,7 +280,7 @@ public class GameCamera {
                 if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
                     //double angel_alpha=distance[1]<Double.POSITIVE_INFINITY?(distance[1]<distance_Ang_Pla[i]? 0:Tardis.alpha):1.0;
                     double angel_alpha = distance_Ang_Pla[sortedAngel[i]] < distance[1] ? 1.0 : distance[0] < Double.POSITIVE_INFINITY ? 1 - Tardis.alpha : 0;
-                    drawAngel(number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]] * Math.cos(ray.angle - player.point_of_view), angel_alpha);
+                    drawAngel(sortedAngel[i],number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]] * Math.cos(ray.angle - player.point_of_view), angel_alpha);
                     onSight[sortedAngel[i]] = angel_alpha != 0;
                 }
             }
@@ -310,6 +311,7 @@ public class GameCamera {
 
 
     public void buildScreen(Maze maze, Player player, Angel[] angels) {
+        gc.restore();
         // long time = System.currentTimeMillis();
         gc.drawImage(Resources.Textures.SKY, 0, 0,Resources.Textures.SKY.getWidth(),Resources.Textures.SKY.getHeight(),0,0,prPlane.width,prPlane.height);
 
@@ -382,8 +384,8 @@ public class GameCamera {
         gc.setFill(Color.WHITE);
         gc.fillText(message, prPlane.width / 2 - message.length() / 2, prPlane.height / 3);
 
-        gc.fillText("[1] Restart?", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 50);
-        gc.fillText("[2] Quit?", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 75);
+        gc.fillText("[1] Restart", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 50);
+        gc.fillText("[2] Quit", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 75);
         gc.fillText("[3] Main Menu", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 100);
 
         gc.fillText("You   : "+Integer.toString(vc),prPlane.width*3/4,prPlane.height*3/4);
