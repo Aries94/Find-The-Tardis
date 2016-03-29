@@ -52,6 +52,7 @@ public class GameCamera {
             this.height = height;
             this.distance = (width / 2) / Math.tan(FOV / 2);
 
+
             columnWidth = width / resolution;
             coef = this.height * this.distance / this.width / Resources.Heights.PLAYER;
 
@@ -189,10 +190,10 @@ public class GameCamera {
 
         gc.setFill(Color.BLACK);
 
-       // if (!debug) {
+        if (!debug) {
             gc.setGlobalAlpha(distance < SHADING_DISTANCE ? distance / SHADING_DISTANCE : 1.0);
             gc.fillRect(startX, startY, width, height);
-        //}
+        }
         gc.setGlobalAlpha(1.0);
 
     }

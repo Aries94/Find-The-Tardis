@@ -1,13 +1,19 @@
+
 import data.*;
 import javafx.application.*;
 import javafx.scene.*;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.concurrent.*;
+
+import java.awt.*;
 import java.util.HashSet;
 
 //TODO sound;
@@ -17,11 +23,13 @@ import java.util.HashSet;
 public class Game extends Application {
     final private double END_GAME_RANGE = 0.3;
 
-    private boolean debug = false;
+    private boolean debug = true;
     private boolean paused = false;
     private boolean inMenu = true;
     private int victory_counter = 0;
     private int defeat_counter = 0;
+    private double lastSceneX=0,lastSceneY=0;
+    private double dSceneX=0,dSceneY=0;
     private long time;
     private Maze maze;
     private Player player;
@@ -32,6 +40,8 @@ public class Game extends Application {
     private Angel[] angels;
     private HashSet<KeyCode> keySet;
     private GraphicsContext gc;
+    //private Robot robot;
+
 
 
     public static void main(String[] args) {
@@ -59,33 +69,58 @@ public class Game extends Application {
 
 
     public void start(Stage stage) {
-        stage.setTitle("Find the Tardis");
 
-        stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
 
-        FlowPane rootNode = new FlowPane();
+
+
+
+        //FlowPane rootNode = new FlowPane();
+        StackPane rootNode = new StackPane();
         Scene scene = new Scene(rootNode, 1200, 675);
-        stage.setScene(scene);
-
-        keySet = new HashSet<>();
-        scene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
-        scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
-
         Canvas canvas = new Canvas(1200, 675);
+
+        canvas.widthProperty().bind(scene.widthProperty());
+        canvas.heightProperty().bind(scene.heightProperty());
+        System.out.println(canvas.getWidth());
+        keySet = new HashSet<>();
         gc = canvas.getGraphicsContext2D();
-
         gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, debug);
-
         gameLoop = new GameLoop();
         mainMenuLoop = new MainMenuLoop();
-
-
         time=System.currentTimeMillis();
-
         inMenu=true;
+        stage.setScene(scene);
+        setActions(scene,stage);
         mainMenuLoop.start();
         rootNode.getChildren().add(canvas);
         stage.show();
+      /*  try {
+            robot=new Robot();
+        } catch (AWTException e) {
+            System.out.println("Robot init error");
+        }*/
+    }
+
+    private void setActions(Scene scene, Stage stage){
+        stage.setTitle("Find the Tardis");
+        stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
+
+        scene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
+        scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
+
+        scene.setOnMouseMoved((MouseEvent event) -> {
+                dSceneX = event.getSceneX() - lastSceneX;
+                lastSceneX = event.getSceneX();
+        });
+      //  scene.setOnMouseExited((MouseEvent event) -> {
+
+      //  });
+      //  stage.setFullScreen(true);
+
+
+
+        //stage.setFullScreen(true);
+        //scene.setCursor(Cursor.NONE);
     }
 
 
@@ -117,10 +152,11 @@ public class Game extends Application {
                 protected Void call() throws Exception {
                     //    time=System.currentTimeMillis();
                     if (!paused) {
-                        player.update(keySet, maze);
+                        player.update(keySet, maze,dSceneX);
                         gameCamera.buildScreen(maze, player, angels);
-                        Angel.update(angels, gameCamera, maze, player);
+                        //Angel.update(angels, gameCamera, maze, player);
                         tardis.update(keySet, maze, player);
+                        dSceneX=dSceneY=0;
                     }
                     if (Maze.distenceBetween(player.coords, tardis.coords) < END_GAME_RANGE * 2 && tardis.isHere) {
                         if (!paused) victory_counter++;
@@ -164,6 +200,7 @@ public class Game extends Application {
                 inMenu=true;
             }
         }
+
     }
 
     private class MainMenuLoop extends Service<Void> {

@@ -1,13 +1,13 @@
 package data;
 
 public class Angel {
-    public final static int NUMBER_OF_ANGELS = 10;
+    public final static int NUMBER_OF_ANGELS = 1;
 
     final static public double HUNTING_RANGE = 4.1;
     final static int MOVING_COOLDOWN = 500; //milliseconds;
     final static int HUNTING_COOLDOWN = 6000;
     final static int TEXTURE_UPDATE_COOLDOWN = 1500;
-    final static double HALFWIDTH = 0.2;
+    final static double HALFWIDTH = 0.25;
 
     protected static int[] textureID = new int[NUMBER_OF_ANGELS];
 

@@ -27,7 +27,7 @@ public class Resources {
     class Heights {
         final static double WALL = 5;
         final static double TARDIS = 2.4;
-        final static double ANGEL = 1.7;
+        final static double ANGEL = 1.6;
         final static double PLAYER = 1;
     }
 

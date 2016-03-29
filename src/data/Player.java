@@ -12,6 +12,7 @@ public class Player {
 
     public Maze.Coords coords;
     protected double point_of_view = Math.toRadians(0);
+    //public int rotateFactor =0; // rF>0 - to the left; rf<0 - to the right;
 
 
     public Player(Maze maze, Tardis tardis) {
@@ -24,11 +25,11 @@ public class Player {
     }
 
 
-    public void update(HashSet<?> keySet, Maze maze) {
+    public void update(HashSet<?> keySet, Maze maze, double dSceneX) {
         if (keySet.contains(KeyCode.W)) move(true, maze);
         if (keySet.contains(KeyCode.S)) move(false, maze);
-        if (keySet.contains(KeyCode.A)) rotate(true);
-        if (keySet.contains(KeyCode.D)) rotate(false);
+        if (keySet.contains(KeyCode.A)|| dSceneX<0) rotate(true);
+        if (keySet.contains(KeyCode.D)|| dSceneX>0) rotate(false);
     }
 
 
