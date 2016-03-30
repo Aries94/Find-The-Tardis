@@ -1,7 +1,7 @@
 package data;
 
 public class Angel {
-    public final static int NUMBER_OF_ANGELS = 1;
+    public final static int NUMBER_OF_ANGELS = 10;
 
     final static public double HUNTING_RANGE = 4.1;
     final static int MOVING_COOLDOWN = 500; //milliseconds;

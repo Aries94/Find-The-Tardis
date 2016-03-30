@@ -23,7 +23,7 @@ import java.util.HashSet;
 public class Game extends Application {
     final private double END_GAME_RANGE = 0.3;
 
-    private boolean debug = true;
+    private boolean debug = false;
     private boolean paused = false;
     private boolean inMenu = true;
     private int victory_counter = 0;
@@ -40,8 +40,8 @@ public class Game extends Application {
     private Angel[] angels;
     private HashSet<KeyCode> keySet;
     private GraphicsContext gc;
-    //private Robot robot;
-
+    private Robot robot;
+    Scene scene;
 
 
     public static void main(String[] args) {
@@ -76,51 +76,78 @@ public class Game extends Application {
 
         //FlowPane rootNode = new FlowPane();
         StackPane rootNode = new StackPane();
-        Scene scene = new Scene(rootNode, 1200, 675);
+        scene = new Scene(rootNode, 1200, 675);
         Canvas canvas = new Canvas(1200, 675);
 
-        canvas.widthProperty().bind(scene.widthProperty());
-        canvas.heightProperty().bind(scene.heightProperty());
-        System.out.println(canvas.getWidth());
+        stage.setMinHeight(638);
+        stage.setMinWidth(816);
+
+
+        canvas.widthProperty().bind(scene.widthProperty().subtract(5));
+        canvas.heightProperty().bind(scene.heightProperty().subtract(5));
+
         keySet = new HashSet<>();
         gc = canvas.getGraphicsContext2D();
-        gameCamera = new GameCamera(gc, 600, player.FIELD_OF_VIEW, debug);
+        gameCamera = new GameCamera(gc, 400, player.FIELD_OF_VIEW, debug);
         gameLoop = new GameLoop();
         mainMenuLoop = new MainMenuLoop();
         time=System.currentTimeMillis();
         inMenu=true;
         stage.setScene(scene);
-        setActions(scene,stage);
+        setActions(scene,stage,canvas);
         mainMenuLoop.start();
         rootNode.getChildren().add(canvas);
         stage.show();
-      /*  try {
+        try {
             robot=new Robot();
         } catch (AWTException e) {
             System.out.println("Robot init error");
-        }*/
+        }
+
+        lastSceneX=stage.getWidth()/2;
+        lastSceneY=stage.getHeight()/2;
+        robot.mouseMove((int)(lastSceneX+stage.getX()),(int)(lastSceneY+stage.getY()));
     }
 
-    private void setActions(Scene scene, Stage stage){
+    private boolean NOTantiMouseEvent = true;
+    private void setActions(Scene scene, Stage stage, Canvas canvas){
         stage.setTitle("Find the Tardis");
         stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
 
         scene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
         scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
 
-        scene.setOnMouseMoved((MouseEvent event) -> {
+        canvas.setOnMouseMoved((MouseEvent event) -> {
+            if (NOTantiMouseEvent) {
                 dSceneX = event.getSceneX() - lastSceneX;
                 lastSceneX = event.getSceneX();
-        });
-      //  scene.setOnMouseExited((MouseEvent event) -> {
 
-      //  });
+                dSceneY = event.getSceneY() - lastSceneY;
+                lastSceneY = event.getSceneY();
+
+                player.verticalLook-=dSceneY;
+            } else {
+                NOTantiMouseEvent=true;
+            }
+
+        });
+        canvas.setOnMouseExited((MouseEvent event) -> {
+            lastSceneX=stage.getWidth()/2;
+            lastSceneY=stage.getHeight()/2;
+            robot.mouseMove((int)(lastSceneX+stage.getX()),(int)(lastSceneY+stage.getY()));
+            NOTantiMouseEvent=false;
+        });
+       /* scene.setOnMouseExited((MouseEvent event) -> {
+            lastSceneX=stage.getWidth()/2;
+            lastSceneY=stage.getHeight()/2;
+
+        });*/
       //  stage.setFullScreen(true);
 
 
 
-        //stage.setFullScreen(true);
-        //scene.setCursor(Cursor.NONE);
+        stage.setFullScreen(true);
+        scene.setCursor(Cursor.NONE);
     }
 
 
@@ -154,17 +181,19 @@ public class Game extends Application {
                     if (!paused) {
                         player.update(keySet, maze,dSceneX);
                         gameCamera.buildScreen(maze, player, angels);
-                        //Angel.update(angels, gameCamera, maze, player);
+                        Angel.update(angels, gameCamera, maze, player);
                         tardis.update(keySet, maze, player);
                         dSceneX=dSceneY=0;
+
                     }
                     if (Maze.distenceBetween(player.coords, tardis.coords) < END_GAME_RANGE * 2 && tardis.isHere) {
                         if (!paused) victory_counter++;
                         paused = true;
-                        gameCamera.endGameScreen("You won!", victory_counter, defeat_counter);
+                        gameCamera.endGameScreen("You win!", victory_counter, defeat_counter);
                         endGameUpdate();
 
                     }
+
                     double nearestAngelDist = Double.POSITIVE_INFINITY;
                     for (Angel angel : angels)
                         nearestAngelDist = Math.min(nearestAngelDist, Maze.distenceBetween(player.coords, angel.coords));
