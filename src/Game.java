@@ -24,13 +24,14 @@ public class Game extends Application {
     final private double END_GAME_RANGE = 0.3;
 
     private boolean debug = false;
-    private boolean paused = false;
+    private boolean gameEnded = false;
     private boolean inMenu = true;
+    private boolean onPause = false;
     private int victory_counter = 0;
     private int defeat_counter = 0;
     private double lastSceneX=0,lastSceneY=0;
     private double dSceneX=0,dSceneY=0;
-    private long time;
+    private long timeESCAPE=System.currentTimeMillis();
     private Maze maze;
     private Player player;
     private Tardis tardis;
@@ -41,7 +42,9 @@ public class Game extends Application {
     private HashSet<KeyCode> keySet;
     private GraphicsContext gc;
     private Robot robot;
-    Scene scene;
+    private Scene scene;
+    private Canvas canvas;
+
 
 
     public static void main(String[] args) {
@@ -58,7 +61,7 @@ public class Game extends Application {
         for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
             angels[i] = new Angel(maze,i);
         }
-        paused = false;
+        gameEnded = false;
         inMenu=false;
     }
 
@@ -77,7 +80,7 @@ public class Game extends Application {
         //FlowPane rootNode = new FlowPane();
         StackPane rootNode = new StackPane();
         scene = new Scene(rootNode, 1200, 675);
-        Canvas canvas = new Canvas(1200, 675);
+        canvas = new Canvas(1200, 675);
 
         stage.setMinHeight(638);
         stage.setMinWidth(816);
@@ -91,10 +94,9 @@ public class Game extends Application {
         gameCamera = new GameCamera(gc, 400, player.FIELD_OF_VIEW, debug);
         gameLoop = new GameLoop();
         mainMenuLoop = new MainMenuLoop();
-        time=System.currentTimeMillis();
         inMenu=true;
         stage.setScene(scene);
-        setActions(scene,stage,canvas);
+        setActions(stage);
         mainMenuLoop.start();
         rootNode.getChildren().add(canvas);
         stage.show();
@@ -110,44 +112,40 @@ public class Game extends Application {
     }
 
     private boolean NOTantiMouseEvent = true;
-    private void setActions(Scene scene, Stage stage, Canvas canvas){
+    private void setActions(Stage stage){
         stage.setTitle("Find the Tardis");
         stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
 
         scene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
         scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
 
-        canvas.setOnMouseMoved((MouseEvent event) -> {
-            if (NOTantiMouseEvent) {
-                dSceneX = event.getSceneX() - lastSceneX;
-                lastSceneX = event.getSceneX();
-
-                dSceneY = event.getSceneY() - lastSceneY;
-                lastSceneY = event.getSceneY();
-
-                player.verticalLook-=dSceneY;
-            } else {
-                NOTantiMouseEvent=true;
-            }
-
-        });
-        canvas.setOnMouseExited((MouseEvent event) -> {
-            lastSceneX=stage.getWidth()/2;
-            lastSceneY=stage.getHeight()/2;
-            robot.mouseMove((int)(lastSceneX+stage.getX()),(int)(lastSceneY+stage.getY()));
-            NOTantiMouseEvent=false;
-        });
-       /* scene.setOnMouseExited((MouseEvent event) -> {
-            lastSceneX=stage.getWidth()/2;
-            lastSceneY=stage.getHeight()/2;
-
-        });*/
-      //  stage.setFullScreen(true);
+        canvas.setOnMouseExited(Game.this::mouseEventOn_onExited);
+        canvas.setOnMouseMoved(Game.this::mouseEventOn_onMoved);
 
 
-
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
         scene.setCursor(Cursor.NONE);
+    }
+
+    private void mouseEventOn_onMoved(MouseEvent event){
+        if (NOTantiMouseEvent) {
+            dSceneX = event.getSceneX() - lastSceneX;
+            lastSceneX = event.getSceneX();
+
+            dSceneY = event.getSceneY() - lastSceneY;
+            lastSceneY = event.getSceneY();
+
+            player.verticalLook-=dSceneY;
+        } else {
+            NOTantiMouseEvent=true;
+        }
+    }
+
+    private void mouseEventOn_onExited(MouseEvent event){
+        lastSceneX=scene.getWidth()/2;
+        lastSceneY=scene.getHeight()/2;
+        robot.mouseMove((int)(lastSceneX+scene.getX()),(int)(lastSceneY+scene.getY()));
+        NOTantiMouseEvent=false;
     }
 
 
@@ -177,8 +175,7 @@ public class Game extends Application {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    //    time=System.currentTimeMillis();
-                    if (!paused) {
+                    if (!gameEnded && !onPause) {
                         player.update(keySet, maze,dSceneX);
                         gameCamera.buildScreen(maze, player, angels);
                         Angel.update(angels, gameCamera, maze, player);
@@ -187,8 +184,8 @@ public class Game extends Application {
 
                     }
                     if (Maze.distenceBetween(player.coords, tardis.coords) < END_GAME_RANGE * 2 && tardis.isHere) {
-                        if (!paused) victory_counter++;
-                        paused = true;
+                        if (!gameEnded) victory_counter++;
+                        gameEnded = true;
                         gameCamera.endGameScreen("You win!", victory_counter, defeat_counter);
                         endGameUpdate();
 
@@ -202,12 +199,30 @@ public class Game extends Application {
                         gc.fillText("DANGER! " + Double.toString(nearestAngelDist), 20, 20);
                     }
                     if (nearestAngelDist < END_GAME_RANGE) {
-                        if (!paused) defeat_counter++;
-                        paused = true;
+                        if (!gameEnded) defeat_counter++;
+                        gameEnded = true;
                         gameCamera.endGameScreen("You lose!", victory_counter, defeat_counter);
                         endGameUpdate();
                     }
-                    //    System.out.println(System.currentTimeMillis()-time);
+
+
+                    if (keySet.contains(KeyCode.ESCAPE) && (System.currentTimeMillis()-timeESCAPE>200)){
+                        if (onPause)
+                        {
+                            onPause=false;
+                            canvas.setOnMouseExited(Game.this::mouseEventOn_onExited);
+                            canvas.setOnMouseMoved(Game.this::mouseEventOn_onMoved);
+                            scene.setCursor(Cursor.NONE);
+                        }else{
+                            onPause=true;
+                            canvas.setOnMouseExited(null);
+                            canvas.setOnMouseMoved(null);
+                            scene.setCursor(Cursor.DEFAULT);
+                        }
+                        timeESCAPE=System.currentTimeMillis();
+                    }
+
+
                     return null;
                 }
 

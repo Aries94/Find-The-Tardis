@@ -20,7 +20,7 @@ public class GameCamera {
     final private int MIN_RAINDROPS = 0;
     final private int MAX_RAINDROPS = 1;
     final private double EPSILON = 0.0005;
-    final private String version = "v1.4a";
+    final private String version = "v2.0a";
 
 
     protected GraphicsContext gc;
