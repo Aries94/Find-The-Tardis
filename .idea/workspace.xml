@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dfe56b73-3657-4d2a-b502-9e48442a57fa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop$1.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop$1.class" />
+    <list default="true" id="dfe56b73-3657-4d2a-b502-9e48442a57fa" name="Default" comment="v2.1a&#10;">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Start.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game$GameLoop.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/Game.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel$1.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Angel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$PrPlane.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$PrPlane.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray$RayPoint.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray$RayPoint.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera$Ray.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/GameCamera.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Maze$Coords.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Maze$Coords.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Maze.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Maze.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Player.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Player.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Blocks.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Blocks.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Heights.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Heights.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Textures.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources$Textures.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Resources.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FindTheTardis/data/Tardis.class" afterPath="$PROJECT_DIR$/out/production/FindTheTardis/data/Tardis.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.java" afterPath="$PROJECT_DIR$/src/Game.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Angel.java" afterPath="$PROJECT_DIR$/src/data/Angel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/GameCamera.java" afterPath="$PROJECT_DIR$/src/data/GameCamera.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Maze.java" afterPath="$PROJECT_DIR$/src/data/Maze.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Player.java" afterPath="$PROJECT_DIR$/src/data/Player.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Resources.java" afterPath="$PROJECT_DIR$/src/data/Resources.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Tardis.java" afterPath="$PROJECT_DIR$/src/data/Tardis.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Game.java" afterPath="$PROJECT_DIR$/src/data/Game.java" />
     </list>
     <ignored path="FindTheTardis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/src/data/Maze.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <caret line="39" column="5" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -43,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/src/data/Angel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="3" column="49" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="49" />
+              <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -53,21 +73,19 @@
         <entry file="file://$PROJECT_DIR$/src/data/Tardis.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="82" column="43" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameCamera.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameCamera.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.6048689">
+              <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2766#2767#0" expanded="true" />
-                <element signature="e#2832#2833#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,19 +95,34 @@
         <entry file="file://$PROJECT_DIR$/src/data/Resources.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="38" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
+              <caret line="34" column="27" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Game.java">
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/data/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6255925">
-              <caret line="208" column="101" selection-start-line="208" selection-start-column="101" selection-end-line="208" selection-end-column="101" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1593#1594#0" expanded="true" />
+                <element signature="e#1621#1622#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Start.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Start.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+              <folding>
+                <element signature="e#82#83#0" expanded="true" />
+                <element signature="e#113#114#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -99,8 +132,10 @@
         <entry file="file://$PROJECT_DIR$/src/data/Player.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="41" selection-start-line="40" selection-start-column="41" selection-end-line="40" selection-end-column="41" />
-              <folding />
+              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -145,13 +180,15 @@
         <option value="$PROJECT_DIR$/debug.txt" />
         <option value="$PROJECT_DIR$/src/temp.java" />
         <option value="$PROJECT_DIR$/src/1.html" />
-        <option value="$PROJECT_DIR$/src/data/Tardis.java" />
         <option value="$PROJECT_DIR$/src/data/Actions.java" />
+        <option value="$PROJECT_DIR$/src/Game.java" />
+        <option value="$PROJECT_DIR$/src/data/Tardis.java" />
+        <option value="$PROJECT_DIR$/src/data/Maze.java" />
+        <option value="$PROJECT_DIR$/src/Start.java" />
+        <option value="$PROJECT_DIR$/src/data/Game.java" />
         <option value="$PROJECT_DIR$/src/data/Resources.java" />
         <option value="$PROJECT_DIR$/src/data/Angel.java" />
         <option value="$PROJECT_DIR$/src/data/Player.java" />
-        <option value="$PROJECT_DIR$/src/data/Maze.java" />
-        <option value="$PROJECT_DIR$/src/Game.java" />
         <option value="$PROJECT_DIR$/src/data/GameCamera.java" />
       </list>
     </option>
@@ -187,6 +224,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -237,33 +275,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FindTheTardis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Find-The-Tardis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -308,9 +327,23 @@
       <recent name="D:\Code\JavaProjects\FindTheTardis" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Game">
+  <component name="RunManager" selected="Application.Start">
+    <configuration default="false" name="Start" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Start" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="FindTheTardis" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="false" name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Game" />
+      <option name="MAIN_CLASS_NAME" value="data.Game" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -390,12 +423,14 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="Application.Game" />
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Application.Start" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Game" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.Game" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.Start" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Game" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
@@ -509,7 +544,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459347911605</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="v2.0">
+      <created>1459349917341</created>
+      <option name="number" value="00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1459349917341</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -527,12 +568,12 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29180887" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879046" sideWeight="0.49092284" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.49092284" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5544629" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.040955633" sideWeight="0.5574887" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24914676" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2320819" sideWeight="0.44553706" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.040955633" sideWeight="0.44251135" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.49092284" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22844176" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -574,11 +615,12 @@
     <MESSAGE value="Added:&#10;- new AngelTexture" />
     <MESSAGE value="Backup" />
     <MESSAGE value="v 1.5a (pre2.0a)&#10;Added: &#10;- custom height/width;&#10;- mouse support&#10;Improved:&#10;- player movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="v 1.5a (pre2.0a)&#10;Added: &#10;- custom height/width;&#10;- mouse support&#10;Improved:&#10;- player movement" />
+    <MESSAGE value="v2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="v2.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="66" />
+      <option name="time" value="68" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -591,32 +633,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/debug.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Runtime.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89041096">
-          <caret line="687" column="23" selection-start-line="687" selection-start-column="23" selection-end-line="687" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/System.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4712329">
-          <caret line="991" column="23" selection-start-line="991" selection-start-column="23" selection-end-line="991" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/sonic_11.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/resources/angel.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -635,20 +651,6 @@
     <entry file="file://$PROJECT_DIR$/src/resources/angel2_black.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/concurrent/Service.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4293948">
-          <caret line="727" column="0" selection-start-line="727" selection-start-column="0" selection-end-line="727" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/concurrent/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7723343">
-          <caret line="1441" column="0" selection-start-line="1441" selection-start-column="0" selection-end-line="1441" selection-end-column="0" />
-        </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/io/FileWriter.java">
@@ -721,13 +723,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="744" column="0" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/com/sun/javafx/tk/quantum/PresentingPainter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -782,14 +777,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/Tardis.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="43" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/scene/Cursor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.167147">
@@ -808,7 +795,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="181" column="38" selection-start-line="181" selection-start-column="28" selection-end-line="181" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -831,10 +817,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3314121">
           <caret line="478" column="24" selection-start-line="478" selection-start-column="24" selection-end-line="478" selection-end-column="24" />
-          <folding>
-            <element signature="e#21623#21624#0" expanded="false" />
-            <element signature="e#21647#21648#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -868,18 +850,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28242075">
           <caret line="100" column="28" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
-          <folding>
-            <element signature="e#3087#3088#0" expanded="false" />
-            <element signature="e#3135#3136#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/Resources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="38" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -911,15 +881,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="217.07692">
           <caret line="291" column="28" selection-start-line="291" selection-start-column="28" selection-end-line="291" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/Maze.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -927,6 +888,86 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57345974">
           <caret line="278" column="13" selection-start-line="278" selection-start-column="13" selection-end-line="278" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/event/EventHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63978493">
+          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Override.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7562724">
+          <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/concurrent/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.48924732">
+          <caret line="688" column="25" selection-start-line="688" selection-start-column="25" selection-end-line="688" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/javafx-src.zip!/javafx/concurrent/Service.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33175355">
+          <caret line="583" column="16" selection-start-line="583" selection-start-column="16" selection-end-line="583" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="5.28673">
+          <caret line="642" column="25" selection-start-line="642" selection-start-column="25" selection-end-line="642" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_66/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33175355">
+          <caret line="744" column="0" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Start.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding>
+            <element signature="e#82#83#0" expanded="true" />
+            <element signature="e#113#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/Maze.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="5" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/Resources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="27" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/Tardis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -934,35 +975,37 @@
     <entry file="file://$PROJECT_DIR$/src/data/Angel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="49" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="49" />
+          <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2766#2767#0" expanded="true" />
-            <element signature="e#2832#2833#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="41" selection-start-line="40" selection-start-column="41" selection-end-line="40" selection-end-column="41" />
-          <folding />
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/data/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6255925">
-          <caret line="208" column="101" selection-start-line="208" selection-start-column="101" selection-end-line="208" selection-end-column="101" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1593#1594#0" expanded="true" />
+            <element signature="e#1621#1622#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/GameCamera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6048689">
+          <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

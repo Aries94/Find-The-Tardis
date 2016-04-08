@@ -2,14 +2,10 @@ package data;
 
 import javafx.scene.image.Image;
 
-public class Resources {
-    class Blocks {
-        final static int EMPTY = 0;
-        final static int WALL = 1;
-        final static int TARDIS = 2;
-    }
+abstract class Resources {
+    enum Blocks {Empty, Wall, Tardis}
 
-    public static class Textures {
+    static class Textures {
         final static Image SKY = new Image("/resources/deathvalley_panorama.jpg");
         final static Image WALL = new Image("/resources/wall_texture.jpg");
         final static Image TARDIS = new Image("/resources/tardis_main.png");
@@ -33,5 +29,9 @@ public class Resources {
 
     static double mod(double a, double b) {
         return a < 0 ? mod(a + b, b) : a % b < 0 ? a % b + b : a % b;
+    }
+
+    static class Entity{
+        Maze.Coords coords;
     }
 }

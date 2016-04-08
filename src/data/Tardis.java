@@ -4,14 +4,13 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;
 
-public class Tardis {
+class Tardis extends Resources.Entity{
     static public double alpha;
 
     private final long D_COOLDOWN = 120000;
     private final long A_COOLDOWN = 5000;
 
     public boolean isHere;
-    public Maze.Coords coords;
 
     private enum States {Standing, Appearing, Disappearing, inVortex}
     private double[] moving_Alphas = new double[]{1, 1, 0.25, 0.75, 0.25, 0.75, 0, 0};
@@ -22,10 +21,22 @@ public class Tardis {
     private boolean debug;
 
 
-    public Tardis(Maze maze, boolean debug) {
+    //singlton
+    private static Tardis instance = new Tardis();
+
+    private Tardis(){
+    }
+
+
+    static Tardis getInstance(){
+        return instance;
+    }
+
+
+    void init(Maze maze, boolean debug) {
         Maze.Coords coords = maze.lookForEmpty();
         this.coords = new Maze.Coords(maze, coords.x + 0.5, coords.y + 0.5);
-        maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.TARDIS;
+        maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.Tardis;
         alpha = 1;
         state = States.Standing;
         isHere = true;
@@ -53,14 +64,14 @@ public class Tardis {
                         coords = maze.lookForEmpty();
                     } while (maze.pathExists(coords, player.coords));
                     this.coords = new Maze.Coords(maze, coords.x + 0.5, coords.y + 0.5);
-                    maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.TARDIS;
+                    maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.Tardis;
                 }
                 break;
             case Disappearing:
                 currentMovingStage = moving(currentMovingStage, 1);
                 if (currentMovingStage == moving_Alphas.length - 2) {
                     state = States.inVortex;
-                    maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.EMPTY;
+                    maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.Empty;
                 }
                 break;
             case Appearing:

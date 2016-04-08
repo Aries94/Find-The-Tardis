@@ -1,7 +1,7 @@
 package data;
 
-public class Angel {
-    public final static int NUMBER_OF_ANGELS = 10;
+class Angel extends Resources.Entity{
+    public final static int NUMBER_OF_ANGELS = 3;
 
     final static public double HUNTING_RANGE = 4.1;
     final static int MOVING_COOLDOWN = 500; //milliseconds;
@@ -14,7 +14,6 @@ public class Angel {
     public enum States {Wandering, Hunting, OnSight}
 
     protected boolean isOnSight = false;
-    public Maze.Coords coords;
     public States state;
     public double alpha_angle;
 
@@ -47,20 +46,20 @@ public class Angel {
 
 
     boolean near(Player player, Maze.Coords falseCoords) {
-        return (HUNTING_RANGE > Maze.distenceBetween(falseCoords, player.coords));
+        return (HUNTING_RANGE > Maze.distanceBetween(player,falseCoords));
     }
 
     boolean near(Player player, Maze.Coords falseCoords, double range) {
-        return (range > Maze.distenceBetween(falseCoords, player.coords));
+        return (range > Maze.distanceBetween(player,falseCoords));
     }
 
     boolean near(Angel angel, Maze.Coords falseCoords) {
-        return (!this.equals(angel) && HALFWIDTH > Maze.distenceBetween(falseCoords, angel.coords));
+        return (!this.equals(angel) && HALFWIDTH > Maze.distanceBetween(angel,falseCoords));
     }
 
 
     private void hunt(GameCamera gameCamera, Maze maze, Player player, Angel[] angels) {
-        double newDistance = 2.0 / 4.0 * Maze.distenceBetween(coords, player.coords);
+        double newDistance = 2.0 / 4.0 * Maze.distanceBetween(this,player);
         double angleBehind = alpha_angle - GameCamera.CIRCLE / 4;
         double angle;
         boolean nearOtherAngel;
@@ -75,7 +74,7 @@ public class Angel {
             for (Angel angel : angels) nearOtherAngel = nearOtherAngel || near(angel, falseCoords);
             count--;
         }
-        while (gameCamera.falseScreen(maze, player, falseCoords) || nearOtherAngel || !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.EMPTY));
+        while (gameCamera.falseScreen(maze, player, falseCoords) || nearOtherAngel || !maze.validCoords(falseCoords) || (maze.map[(int) falseCoords.x][(int) falseCoords.y] != Resources.Blocks.Empty));
         if (count > 0) coords = falseCoords;
 
     }

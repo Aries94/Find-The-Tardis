@@ -3,26 +3,49 @@ package data;
 import java.io.*;
 import java.util.*;
 
-public class Maze {
+class Maze {
     private final int MAX_SIZE = 400;
 
     private int size;
-    protected int[][] map;
+    //int[][] map;
+
+    Resources.Blocks[][] map;
 
 
-    public Maze() {
+
+    //singlton
+    private static Maze instance = new Maze();
+
+    private Maze(){
+    }
+
+
+    static Maze getInstance(){
+        return instance;
+    }
+
+    void init() {
         size = 10;
-        map = new int[size][size];
-        map[7][2] = map[7][3] = map[6][3] = Resources.Blocks.WALL;
+        mapInit(size);
+        map[7][2] = map[7][3] = map[6][3] = Resources.Blocks.Wall;
         defaultMaze();
     }
 
 
-    public Maze(int size) {
+    void init(int size) {
         this.size = (size > 5) && (size < MAX_SIZE) ? size : 10;
-        map = new int[size][size];
+        mapInit(this.size);
         defaultMaze();
         randoMaze();
+    }
+
+    private void mapInit(int size){
+        map = new Resources.Blocks[size+1][];
+        for (int i=0;i<size;i++)
+            map[i]=new Resources.Blocks[size];
+        map[size]=new Resources.Blocks[1]; //point at infinity
+
+        map[size][0]= Resources.Blocks.Empty;
     }
 
 
@@ -42,7 +65,7 @@ public class Maze {
             map[0][i] =
                     map[size - 1][i] =
                             map[i][0] =
-                                    map[i][size - 1] = Resources.Blocks.WALL;
+                                    map[i][size - 1] = Resources.Blocks.Wall;
         }
     }
 
@@ -50,14 +73,25 @@ public class Maze {
     private void randoMaze() {
         for (int i = 1; i < size - 1; i++)
             for (int j = 1; j < size - 1; j++)
-                map[i][j] = Math.random() < 0.4 ? Resources.Blocks.WALL : Resources.Blocks.EMPTY;
+                map[i][j] = Math.random() < 0.3 ? Resources.Blocks.Wall : Resources.Blocks.Empty;
     }
 
 
-    public static double distenceBetween(Coords point1, Coords point2) {
-        return Math.sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
+
+    static double distanceBetween(Maze.Coords point1, Maze.Coords point2){
         //Gob bless Pythagoras!
+        return Math.sqrt(Math.pow(point1.x-point2.x,2)+Math.pow(point1.y-point2.y,2));
     }
+
+
+    static double distanceBetween(Resources.Entity entity1, Resources.Entity entity2){
+        return distanceBetween(entity1.coords,entity2.coords);
+    }
+
+    static double distanceBetween(Resources.Entity entity,Maze.Coords point){
+        return distanceBetween(entity.coords,point);
+    }
+
 
 
     Coords lookForEmpty() {
@@ -65,7 +99,7 @@ public class Maze {
         do {
             x = (int) (Math.random() * size);
             y = (int) (Math.random() * size);
-        } while (map[x][y] != Resources.Blocks.EMPTY);
+        } while (map[x][y] != Resources.Blocks.Empty);
         return new Coords(this, x, y);
     }
 
@@ -76,14 +110,14 @@ public class Maze {
 
 
     boolean pathExists(int x1, int y1, int x2, int y2) {
-        if (map[x1][y1] == Resources.Blocks.WALL || map[x2][y2] == Resources.Blocks.WALL || (x1 != x2 && y1 != y2))
+        if (map[x1][y1] == Resources.Blocks.Wall || map[x2][y2] == Resources.Blocks.Wall || (x1 != x2 && y1 != y2))
             return false;
 
         ArrayDeque<Coords> adq = new ArrayDeque<>((size-1)*(size-1));
         boolean[][] visited = new boolean[size][size];
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
-                if (map[i][j] == Resources.Blocks.WALL) visited[i][j] = true;
+                if (map[i][j] == Resources.Blocks.Wall) visited[i][j] = true;
 
         Coords coord = new Coords(this, x1, y1);
         adq.addFirst(coord);
@@ -115,22 +149,4 @@ public class Maze {
     }
 
 
-    void debugOut(Player player) {
-        int[][] debugMap;
-        debugMap = map.clone();
-        debugMap[(int) player.coords.x][(int) player.coords.y] = 3;
-        try (FileWriter file = new FileWriter("debug.txt", false)) {
-            for (int i = 0; i < size; i++) {
-                String s = "";
-                for (int j = 0; j < size; j++)
-                    s = s + debugMap[i][j] + " ";
-                s += '\n';
-                file.write(s);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println(1);
-        } catch (IOException e) {
-            System.out.println(2);
-        }
-    }
 }
