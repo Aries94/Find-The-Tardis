@@ -10,9 +10,9 @@ import javafx.scene.paint.Color;
 
 
 
-class GameCamera {
-    static final double CIRCLE = Math.PI * 2;
-    static double weaponAngle = 0;
+final class GameCamera {
+    final double CIRCLE = Math.PI * 2;
+    double weaponAngle = 0;
 
     final private int MAX_RESOLUTION = 900;
     final private int MAX_VIEW_DISTANCE = 20;
@@ -32,6 +32,12 @@ class GameCamera {
     private Ray ray;
     private Ray falseRay;
 
+    private Player player;
+    private Maze maze;
+    private Tardis tardis;
+    private Monsters monsters;
+
+
 
     //singlton
     private static GameCamera instance = new GameCamera();
@@ -45,13 +51,20 @@ class GameCamera {
     }
 
     void init(GraphicsContext gc, int resolution, double fov, boolean debug) {
+        player=Player.getInstance();
+        monsters = Monsters.getInstance();
+        tardis=Tardis.getInstance();
+        maze=Maze.getInstance();
+
         this.resolution = (resolution > 5 && resolution < MAX_RESOLUTION) ? resolution : MAX_RESOLUTION;
         this.gc = gc;
         this.debug = debug;
         cosAngelAngel = Math.cos(fov / 1.5);
-        prPlane = new PrPlane(fov);
+        prPlane = new PrPlane();
         ray=new Ray();
         falseRay=new Ray();
+
+
     }
 
 
@@ -71,8 +84,8 @@ class GameCamera {
        // DoubleBinding resolution;
 
 
-        PrPlane(double FOV) {
-            halfFOV=FOV/2.0;
+        PrPlane() {
+            halfFOV=player.FIELD_OF_VIEW/2.0;
             width1.bind(gc.getCanvas().widthProperty());
             height1.bind(gc.getCanvas().heightProperty());
 
@@ -120,7 +133,7 @@ class GameCamera {
     }
 
 
-    private class Ray {
+    final private class Ray {
         double angle;
         RayPoint[] rayPoints;
 
@@ -142,7 +155,7 @@ class GameCamera {
         }
 
 
-        private class RayPoint {
+        final private class RayPoint {
             double distance;
             double entry;
 
@@ -178,7 +191,7 @@ class GameCamera {
         }
 
 
-        private void cast(Maze maze, Maze.Coords point, double distance) {
+        private void cast(Maze.Coords point, double distance) {
             double cos = Math.cos(angle);
             double sin = Math.sin(angle);
 
@@ -188,12 +201,12 @@ class GameCamera {
             boolean isX;
 
             if (Math.abs(cos) < EPSILON) {
-                newPoint = new Maze.Coords(maze, point.x, sin > 0 ? Math.floor(point.y + 1) : Math.ceil(point.y - 1));
+                newPoint = new Maze.Coords(point.x, sin > 0 ? Math.floor(point.y + 1) : Math.ceil(point.y - 1));
                 switcher = maze.map[(int) Math.floor(newPoint.x)][(int) Math.floor(newPoint.y - (sin > 0 ? 0 : 1))];
                 newDist = distance + Math.abs(point.y - newPoint.y);
                 isX = false;
             } else if (Math.abs(sin) < EPSILON) {
-                newPoint = new Maze.Coords(maze, cos > 0 ? Math./**/floor(point.x + 1) : Math./**/ceil(point.x - 1), point.y);
+                newPoint = new Maze.Coords(cos > 0 ? Math./**/floor(point.x + 1) : Math./**/ceil(point.x - 1), point.y);
                 switcher = maze.map[(int) Math.floor(newPoint.x - (cos > 0 ? 0 : 1))][(int) Math.floor(newPoint.y)];
                 newDist = distance + Math.abs(point.x - newPoint.x);
                 isX = true;
@@ -204,12 +217,12 @@ class GameCamera {
                 if (stepX / cos < stepY / sin) {
                     switcher = maze.map[(int) (cos > 0 ? Math.floor(point.x + 1) : Math.ceil(point.x - 2))][(int) (sin < 0 ? Math.ceil(point.y - 1) : Math.floor(point.y))];
                     newDist = distance + stepX / cos;
-                    newPoint = new Maze.Coords(maze, point.x + stepX, point.y + stepX / cos * sin);
+                    newPoint = new Maze.Coords(point.x + stepX, point.y + stepX / cos * sin);
                     isX = true;
                 } else {
                     switcher = maze.map[(int) (cos < 0 ? Math.ceil(point.x - 1) : Math.floor(point.x))][(int) (sin > 0 ? Math.floor(point.y + 1) : Math.ceil(point.y - 2))];
                     newDist = distance + stepY / sin;
-                    newPoint = new Maze.Coords(maze, point.x + stepY / sin * cos, point.y + stepY);
+                    newPoint = new Maze.Coords(point.x + stepY / sin * cos, point.y + stepY);
                     isX = false;
                 }
             }
@@ -221,7 +234,7 @@ class GameCamera {
                     rayPoints[Resources.Blocks.Tardis.ordinal()].set(newDist, entry(newPoint, angle, isX));
                 default:
                     if (newDist < GameCamera.this.MAX_VIEW_DISTANCE)
-                        cast(maze, newPoint, newDist);
+                        cast(newPoint, newDist);
                     break;
             }
         }
@@ -230,7 +243,7 @@ class GameCamera {
     }
 
 
-    private void drawTexture(Ray.RayPoint rPoint, Image texture, int number, double angle, double blockHeight, double alpha, double verticalLook) {
+    private void drawTexture(Ray.RayPoint rPoint, Image texture, int number, double angle, double blockHeight, double alpha) {
         double distance = rPoint.distance * Math.cos(angle);
 
         double texture_startX = texture.getWidth() * rPoint.entry;
@@ -243,7 +256,7 @@ class GameCamera {
 
         double height = blockHeight * prPlane.coef / distance;
         height += ((int) height) % 2;
-        double startY = (prPlane.height / 2) * (1 + 1 / distance) - height+verticalLook;
+        double startY = (prPlane.height / 2) * (1 + 1 / distance) - height+player.verticalLook;
 
         gc.setGlobalAlpha(alpha);
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
@@ -276,14 +289,14 @@ class GameCamera {
     }
 
 
-    private double[] drawColumn( int number, double angle, double verticalLook) {
+    private double[] drawColumn( int number, double angle) {
         double[] distance = new double[]{Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY};
         if (ray.rayPoints[Resources.Blocks.Wall.ordinal()].distance<Double.POSITIVE_INFINITY) {
-            drawTexture(ray.rayPoints[Resources.Blocks.Wall.ordinal()], Resources.Textures.WALL, number, angle, Resources.Heights.WALL, 1,verticalLook);
+            drawTexture(ray.rayPoints[Resources.Blocks.Wall.ordinal()], Resources.Textures.WALL, number, angle, Resources.Heights.WALL, 1);
             distance[0] = ray.rayPoints[Resources.Blocks.Wall.ordinal()].distance;
         }
         if (ray.rayPoints[Resources.Blocks.Tardis.ordinal()].distance<Double.POSITIVE_INFINITY) {
-            drawTexture(ray.rayPoints[Resources.Blocks.Tardis.ordinal()], Resources.Textures.TARDIS, number, angle, Resources.Heights.TARDIS, Tardis.alpha,verticalLook);
+            drawTexture(ray.rayPoints[Resources.Blocks.Tardis.ordinal()], Resources.Textures.TARDIS, number, angle, Resources.Heights.TARDIS, Tardis.alpha);
             distance[1] = ray.rayPoints[Resources.Blocks.Tardis.ordinal()].distance;
         }
          /*  if (distance>0.3)
@@ -292,21 +305,21 @@ class GameCamera {
     }
 
 
-    private void drawAngel(int angelNumber, int number, double offset, double distance, double alpha, double vertikalLook) {
+    private void drawAngel(int angelNumber, int number, double offset, double distance, double alpha) {
         double startX = prPlane.columnWidth * number;
         double width = prPlane.columnWidth;
 
-        Image texture = Resources.angelTextures[Angel.textureID[angelNumber]];
-        Image darkTexture = Resources.darkAngelTextures[Angel.textureID[angelNumber]];
+        Image texture = Resources.angelTextures[monsters.angel[angelNumber].textureID];
+        Image darkTexture = Resources.darkAngelTextures[monsters.angel[angelNumber].textureID];
 
-        double texture_startX = texture.getWidth() * (offset + Angel.HALFWIDTH) / Angel.HALFWIDTH / 2;
+        double texture_startX = texture.getWidth() * (offset + monsters.HALFWIDTH) / monsters.HALFWIDTH / 2;
         double texture_startY = 0;
         double texture_width = texture.getWidth() / resolution;
         double texture_height = texture.getHeight();
 
         double height = Resources.Heights.ANGEL * prPlane.coef / distance;
         height += ((int) height) % 2;
-        double startY = (prPlane.height / 2) * (1 + 1 / distance) - height+vertikalLook;
+        double startY = (prPlane.height / 2) * (1 + 1 / distance) - height+player.verticalLook;
 
         gc.setGlobalAlpha(alpha);
         gc.drawImage(texture, texture_startX, texture_startY, texture_width, texture_height, startX, startY, width, height);
@@ -320,104 +333,87 @@ class GameCamera {
     }
 
 
-    private boolean[] buildColumn(Maze maze, Player player, int number, double[] alpha_angle, double[] distance_Ang_Pla) {
-        boolean[] onSight = new boolean[Angel.NUMBER_OF_ANGELS];
-        double[] angelOffset = new double[Angel.NUMBER_OF_ANGELS];
+    private boolean[] buildColumn(int number) {
+        boolean[] onSight = new boolean[monsters.COUNT];
+        double[] angelOffset = new double[monsters.COUNT];
 
         double angle = Math.atan2(prPlane.columnWidth * number - prPlane.width / 2, prPlane.distance);
 
-        int[] sortedAngel = sort(distance_Ang_Pla);
+        int[] sortedAngel = monsters.sort();
 
         //Ray ray = new Ray((player.point_of_view - angle + CIRCLE) % CIRCLE, maze, player.coords);
 
         ray.refresh();
         ray.angle=player.point_of_view - angle;
-        ray.cast(maze,player.coords,0);
+        ray.cast(player.coords,0);
 
-        double[] distance = drawColumn(number, angle,player.verticalLook);
-        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            if ((distance_Ang_Pla[sortedAngel[i]]<SHADING_DISTANCE)&&(distance_Ang_Pla[sortedAngel[i]] < distance[0]) && (Math.cos(alpha_angle[sortedAngel[i]] - player.point_of_view) > cosAngelAngel)) {
-                angelOffset[sortedAngel[i]] = distance_Ang_Pla[sortedAngel[i]] * Math.sin(ray.angle - alpha_angle[sortedAngel[i]]);
-                if (Math.abs(angelOffset[sortedAngel[i]]) < Angel.HALFWIDTH) {
+        double[] distance = drawColumn(number, angle);
+        for (int i = 0; i < monsters.COUNT; i++) {
+            if ((monsters.angel[sortedAngel[i]].distanceToPlayer<SHADING_DISTANCE)&&(monsters.angel[sortedAngel[i]].distanceToPlayer < distance[0]) && (Math.cos(monsters.angel[sortedAngel[i]].alpha_angle - player.point_of_view) > cosAngelAngel)) {
+                angelOffset[sortedAngel[i]] = monsters.angel[sortedAngel[i]].distanceToPlayer * Math.sin(ray.angle - monsters.angel[sortedAngel[i]].alpha_angle);
+                if (Math.abs(angelOffset[sortedAngel[i]]) < monsters.HALFWIDTH) {
                     //double angel_alpha=distance[1]<Double.POSITIVE_INFINITY?(distance[1]<distance_Ang_Pla[i]? 0:Tardis.alpha):1.0;
-                    double angel_alpha = distance_Ang_Pla[sortedAngel[i]] < distance[1] ? 1.0 : distance[0] < Double.POSITIVE_INFINITY ? 1 - Tardis.alpha : 0;
-                    drawAngel(sortedAngel[i],number, angelOffset[sortedAngel[i]], distance_Ang_Pla[sortedAngel[i]] * Math.cos(ray.angle - player.point_of_view), angel_alpha,player.verticalLook);
+                    double angel_alpha = monsters.angel[sortedAngel[i]].distanceToPlayer < distance[1] ? 1.0 : distance[0] < Double.POSITIVE_INFINITY ? 1 - Tardis.alpha : 0;
+                    drawAngel(sortedAngel[i],number, angelOffset[sortedAngel[i]], monsters.angel[sortedAngel[i]].distanceToPlayer * Math.cos(ray.angle - player.point_of_view), angel_alpha);
                     onSight[sortedAngel[i]] = angel_alpha != 0;
                 }
             }
         }
+        /*
         if (Math.min(distance[0], distance[1]) > 0.3 && !debug)
-            drawRain(number);
+            drawRain(number);*/
         return onSight;
     }
 
 
-    private int[] sort(double[] array) {
-        int[] result = new int[Angel.NUMBER_OF_ANGELS];
-        int temp;
-        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            result[i] = i;
-        }
-        for (int i = 0; i < Angel.NUMBER_OF_ANGELS - 1; i++) {
-            for (int j = 0; j < Angel.NUMBER_OF_ANGELS - 1 - i; j++) {
-                if (array[result[j]] < array[result[j + 1]]) {
-                    temp = result[j];
-                    result[j] = result[j + 1];
-                    result[j + 1] = temp;
-                }
-            }
-        }
-        return result;
-    }
 
 
-     void gameScreen(Maze maze, Player player, Angel[] angels) {
+
+     void gameScreen() {
         prPlane.get();
-
         gc.save();
 
         // long time = System.currentTimeMillis();
         gc.drawImage(Resources.Textures.SKY, 0,200-player.verticalLook/2,Resources.Textures.SKY.getWidth(),Resources.Textures.SKY.getHeight()-400,0,0,prPlane.width,prPlane.height);
 
-        double[] distance_Ang_Pla = new double[Angel.NUMBER_OF_ANGELS];
-        double[] alpha_angle = new double[Angel.NUMBER_OF_ANGELS];
 
-        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
+        for (int i = 0; i < monsters.COUNT; i++) {
             // System.out.println(i);
-            distance_Ang_Pla[i] = Maze.distanceBetween(player,angels[i]);
+            monsters.angel[i].distanceToPlayer = maze.distanceBetween(player, monsters.angel[i]);
             //System.out.println(i);
-            angels[i].alpha_angle= alpha_angle[i] = Math.acos((angels[i].coords.x - player.coords.x) / distance_Ang_Pla[i]) * (angels[i].coords.y - player.coords.y < 0 ? -1 : 1);
+            monsters.angel[i].alpha_angle = Math.acos((monsters.angel[i].coords.x - player.coords.x) / monsters.angel[i].distanceToPlayer) * (monsters.angel[i].coords.y - player.coords.y < 0 ? -1 : 1);
 
             //alpha_angle[i] = (alpha_angle[i] + CIRCLE) % CIRCLE;
-            angels[i].isOnSight = false;
-        }
-        for (int i = 0; i < prPlane.resolution; i++) {
-            boolean[] onSight = buildColumn(maze, player, i, alpha_angle, distance_Ang_Pla);
-            for (int j = 0; j < Angel.NUMBER_OF_ANGELS; j++)
-                if (onSight[j]) angels[j].isOnSight = true;
+            monsters.angel[i].onSight = false;
         }
 
-        drawWeapon(player);
+        for (int i = 0; i < prPlane.resolution; i++) {
+            boolean[] onSight = buildColumn(i);
+            for (int j = 0; j < monsters.COUNT; j++)
+                if (onSight[j]) monsters.angel[j].onSight = true;
+        }
+
+        drawWeapon();
         gc.restore();
         // Runtime.getRuntime().gc();
         // System.out.println(System.currentTimeMillis()-time);
     }
 
 
-    boolean falseScreen(Maze maze, Player player, Maze.Coords falseCoords) {
-        double distance_Ang_Pla = Maze.distanceBetween(player,falseCoords);
+    boolean falseScreen(Maze.Coords falseCoords) {
+        double distance_Ang_Pla = maze.distanceBetween(player,falseCoords);
         double alpha_angle = Math.acos((falseCoords.x - player.coords.x) / distance_Ang_Pla) * (falseCoords.y - player.coords.y < 0 ? -1 : 1);
 
         boolean angelIsOnSight = false;
         for (int i = 0; i < prPlane.resolution1.get(); i++) {
-            if (falseBuildColumn(maze, player, i, alpha_angle, distance_Ang_Pla))
+            if (falseBuildColumn(i, alpha_angle, distance_Ang_Pla))
                 angelIsOnSight = true;
         }
         return angelIsOnSight;
     }
 
 
-    private boolean falseBuildColumn(Maze maze, Player player, int number, double alpha_angle, double distance_Ang_Pla) {
+    private boolean falseBuildColumn(int number, double alpha_angle, double distance_Ang_Pla) {
         boolean angelIsOnSight = false;
         double angle = Math.atan2(prPlane.columnWidth * number - prPlane.width / 2, prPlane.distance);
 
@@ -425,7 +421,7 @@ class GameCamera {
 
         falseRay.refresh();
         falseRay.angle=player.point_of_view - angle;
-        falseRay.cast(maze,player.coords,0);
+        falseRay.cast(player.coords,0);
 
         double distance = falseRay.rayPoints[Resources.Blocks.Tardis.ordinal()] != null ? falseRay.rayPoints[Resources.Blocks.Tardis.ordinal()].distance :
                 falseRay.rayPoints[Resources.Blocks.Wall.ordinal()] != null ? falseRay.rayPoints[Resources.Blocks.Wall.ordinal()].distance :
@@ -433,7 +429,7 @@ class GameCamera {
 
         if ((distance_Ang_Pla<SHADING_DISTANCE)&&(distance_Ang_Pla < distance) && (Math.cos(alpha_angle - player.point_of_view) > cosAngelAngel)) {
             double angel_offset = distance_Ang_Pla * Math.sin(falseRay.angle - alpha_angle);
-            if (Math.abs(angel_offset) < Angel.HALFWIDTH) {
+            if (Math.abs(angel_offset) < monsters.HALFWIDTH) {
                 angelIsOnSight = true;
             }
         }
@@ -457,11 +453,11 @@ class GameCamera {
         gc.fillText("[3] Main Menu", prPlane.width / 2 - message.length() / 2, prPlane.height / 3 + 100);
 
         gc.fillText("You   : "+Integer.toString(vc),prPlane.width*3/4,prPlane.height*3/4);
-        gc.fillText("Angels: "+Integer.toString(dc),prPlane.width*3/4,prPlane.height*3/4+20);
+        gc.fillText("Monsters: "+Integer.toString(dc),prPlane.width*3/4,prPlane.height*3/4+20);
     }
 
 
-    private void drawWeapon(Player player) {
+    private void drawWeapon() {
         Image weapon = player.weapon;
 
         double width = 0.7 * weapon.getWidth();

@@ -1,10 +1,15 @@
 package data;
 
-import java.io.*;
 import java.util.*;
 
-class Maze {
+final class Maze {
     private final int MAX_SIZE = 400;
+
+
+    private Player player;
+    private Tardis tardis;
+    private Monsters monsters;
+    private GameCamera gameCamera;
 
     private int size;
     //int[][] map;
@@ -25,14 +30,29 @@ class Maze {
     }
 
     void init() {
+        player=Player.getInstance();
+        monsters = Monsters.getInstance();
+        tardis=Tardis.getInstance();
+        gameCamera=GameCamera.getInstance();
+
         size = 10;
         mapInit(size);
         map[7][2] = map[7][3] = map[6][3] = Resources.Blocks.Wall;
         defaultMaze();
+
+
+
     }
 
 
     void init(int size) {
+        player=Player.getInstance();
+        monsters = Monsters.getInstance();
+        tardis=Tardis.getInstance();
+        gameCamera=GameCamera.getInstance();
+
+
+
         this.size = (size > 5) && (size < MAX_SIZE) ? size : 10;
         mapInit(this.size);
         defaultMaze();
@@ -53,9 +73,28 @@ class Maze {
         double x;
         double y;
 
-        Coords(Maze maze, double x, double y) {
-            this.x = (x > 0 && x < maze.size) ? x : 1;
-            this.y = (y > 0 && y < maze.size) ? y : 1;
+        Coords(double x, double y) {
+            set(x,y);
+        }
+
+        Coords(){
+            //point at infinity;
+            setInfinity();
+        }
+
+        void setInfinity(){
+            x=instance.size-0.5;
+            y=0.5;
+        }
+
+        void set(double x,double y){
+            if ((x < 0 || x > instance.size) || (y < 0 || y > instance.size)){
+                //set point at infinity
+                setInfinity();
+                return;
+            }
+            this.x=x;
+            this.y=y;
         }
     }
 
@@ -78,17 +117,17 @@ class Maze {
 
 
 
-    static double distanceBetween(Maze.Coords point1, Maze.Coords point2){
+    double distanceBetween(Maze.Coords point1, Maze.Coords point2){
         //Gob bless Pythagoras!
         return Math.sqrt(Math.pow(point1.x-point2.x,2)+Math.pow(point1.y-point2.y,2));
     }
 
 
-    static double distanceBetween(Resources.Entity entity1, Resources.Entity entity2){
+    double distanceBetween(Resources.Entity entity1, Resources.Entity entity2){
         return distanceBetween(entity1.coords,entity2.coords);
     }
 
-    static double distanceBetween(Resources.Entity entity,Maze.Coords point){
+    double distanceBetween(Resources.Entity entity,Maze.Coords point){
         return distanceBetween(entity.coords,point);
     }
 
@@ -100,7 +139,7 @@ class Maze {
             x = (int) (Math.random() * size);
             y = (int) (Math.random() * size);
         } while (map[x][y] != Resources.Blocks.Empty);
-        return new Coords(this, x, y);
+        return new Coords(x, y);
     }
 
 
@@ -119,7 +158,7 @@ class Maze {
             for (int j = 0; j < size; j++)
                 if (map[i][j] == Resources.Blocks.Wall) visited[i][j] = true;
 
-        Coords coord = new Coords(this, x1, y1);
+        Coords coord = new Coords(x1, y1);
         adq.addFirst(coord);
         visited[x1][y1] = true;
 
@@ -129,16 +168,16 @@ class Maze {
             visited[(int) coord.x][(int) coord.y] = true;
 
             if (!visited[(int) coord.x + 1][(int) coord.y])
-                adq.addLast(new Coords(this, coord.x + 1, coord.y));
+                adq.addLast(new Coords(coord.x + 1, coord.y));
 
             if (!visited[(int) coord.x - 1][(int) coord.y])
-                adq.addLast(new Coords(this, coord.x - 1, coord.y));
+                adq.addLast(new Coords(coord.x - 1, coord.y));
 
             if (!visited[(int) coord.x][(int) coord.y + 1])
-                adq.addLast(new Coords(this, coord.x, coord.y + 1));
+                adq.addLast(new Coords(coord.x, coord.y + 1));
 
             if (!visited[(int) coord.x][(int) coord.y - 1])
-                adq.addLast(new Coords(this, coord.x, coord.y - 1));
+                adq.addLast(new Coords(coord.x, coord.y - 1));
         }
         return false;
     }

@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;
 
-class Tardis extends Resources.Entity{
+final class Tardis extends Resources.Entity{
     static public double alpha;
 
     private final long D_COOLDOWN = 120000;
@@ -20,6 +20,11 @@ class Tardis extends Resources.Entity{
     private long time;
     private boolean debug;
 
+    private Player player;
+    private Maze maze;
+    private Monsters monsters;
+    private GameCamera gameCamera;
+
 
     //singlton
     private static Tardis instance = new Tardis();
@@ -33,19 +38,27 @@ class Tardis extends Resources.Entity{
     }
 
 
-    void init(Maze maze, boolean debug) {
+    void init(boolean debug) {
+        player=Player.getInstance();
+        monsters = Monsters.getInstance();
+        gameCamera=GameCamera.getInstance();
+        maze=Maze.getInstance();
+
+
         Maze.Coords coords = maze.lookForEmpty();
-        this.coords = new Maze.Coords(maze, coords.x + 0.5, coords.y + 0.5);
+        this.coords.set(coords.x + 0.5, coords.y + 0.5);
         maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.Tardis;
         alpha = 1;
         state = States.Standing;
         isHere = true;
         time = System.currentTimeMillis();
         this.debug = debug;
+
+
     }
 
 
-    public void update(HashSet<?> keySet, Maze maze, Player player) {
+    public void update(HashSet<?> keySet) {
         //System.out.println(state);
         switch (state) {
             case Standing:
@@ -63,7 +76,7 @@ class Tardis extends Resources.Entity{
                     do {
                         coords = maze.lookForEmpty();
                     } while (maze.pathExists(coords, player.coords));
-                    this.coords = new Maze.Coords(maze, coords.x + 0.5, coords.y + 0.5);
+                    this.coords.set(coords.x + 0.5, coords.y + 0.5);
                     maze.map[(int) coords.x][(int) coords.y] = Resources.Blocks.Tardis;
                 }
                 break;

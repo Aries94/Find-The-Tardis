@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.concurrent.*;
@@ -16,7 +17,7 @@ import java.awt.*;
 import java.util.HashSet;
 
 
-public class Game extends Application {
+final public class Game extends Application {
     final private double END_GAME_RANGE = 0.3;
     final private long STATE_CHANGE_COOLDOWN=200;
 
@@ -42,12 +43,13 @@ public class Game extends Application {
     private Player player=Player.getInstance();
     private Tardis tardis=Tardis.getInstance();
     private GameCamera gameCamera = GameCamera.getInstance();
+    private Monsters monsters = Monsters.getInstance();
 
-    private Angel[] angels;
+
     private HashSet<KeyCode> keySet;
     private GraphicsContext gc;
     private Robot robot;
-    private Scene scene;
+    private Scene gameScene;
     private Canvas canvas;
     private Stage stage;
 
@@ -62,12 +64,9 @@ public class Game extends Application {
             maze.init();
         else
             maze.init(50);
-        tardis.init(maze, debug);
-        player.init(maze, tardis);
-        angels = new Angel[Angel.NUMBER_OF_ANGELS];
-        for (int i = 0; i < Angel.NUMBER_OF_ANGELS; i++) {
-            angels[i] = new Angel(maze, i);
-        }
+        tardis.init(debug);
+        player.init();
+        monsters.init();
     }
 
 
@@ -83,23 +82,24 @@ public class Game extends Application {
 
 
     public void start(Stage stage) {
-        //FlowPane rootNode = new FlowPane();
         StackPane rootNode = new StackPane();
-        scene = new Scene(rootNode, 500, 500);
+        gameScene = new Scene(rootNode,500,500, Color.BLACK);
+
         canvas = new Canvas(500, 500);
         this.stage=stage;
         stage.setMinHeight(300);
         stage.setMinWidth(300);
 
-        canvas.widthProperty().bind(scene.widthProperty().subtract(5));
-        canvas.heightProperty().bind(scene.heightProperty().subtract(5));
+        canvas.widthProperty().bind(gameScene.widthProperty().subtract(5));
+        canvas.heightProperty().bind(gameScene.heightProperty().subtract(5));
+
 
         keySet = new HashSet<>();
         gc = canvas.getGraphicsContext2D();
 
         gameCamera.init(gc, 400, player.FIELD_OF_VIEW, debug);
 
-        stage.setScene(scene);
+        stage.setScene(gameScene);
         setActions(stage);
         mainMenuLoop.start();
         rootNode.getChildren().add(canvas);
@@ -130,8 +130,8 @@ public class Game extends Application {
         stage.setTitle("Find the Tardis");
         stage.setOnCloseRequest((WindowEvent event) -> Platform.exit());
 
-        scene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
-        scene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
+        gameScene.setOnKeyPressed((KeyEvent event) -> keySet.add(event.getCode()));
+        gameScene.setOnKeyReleased((KeyEvent event) -> keySet.remove(event.getCode()));
 
 
         gameLoop.setOnSucceeded((WorkerStateEvent event) -> reLoop());
@@ -140,7 +140,7 @@ public class Game extends Application {
         pauseLoop.setOnSucceeded((WorkerStateEvent event) -> reLoop());
 
         //stage.setFullScreen(true);
-        //scene.setCursor(Cursor.NONE);
+        //gameScene.setCursor(Cursor.NONE);
     }
 
 
@@ -186,11 +186,11 @@ public class Game extends Application {
         if (turnOn){
             canvas.setOnMouseExited(Game.this::mouseEventOn_onExited);
             canvas.setOnMouseMoved(Game.this::mouseEventOn_onMoved);
-            scene.setCursor(Cursor.NONE);
+            gameScene.setCursor(Cursor.NONE);
         }else{
             canvas.setOnMouseExited(null);
             canvas.setOnMouseMoved(null);
-            scene.setCursor(Cursor.DEFAULT);
+            gameScene.setCursor(Cursor.DEFAULT);
         }
     }
 
@@ -215,10 +215,10 @@ public class Game extends Application {
 
 
     private void mouseEventOn_onExited(MouseEvent event){
-        lastSceneX=scene.getWidth()/2;
-        lastSceneY=scene.getHeight()/2;
+        lastSceneX= gameScene.getWidth()/2;
+        lastSceneY= gameScene.getHeight()/2;
         robot.mouseMove((int)(lastSceneX+stage.getX()),(int)(lastSceneY+stage.getY()));
-        //System.out.println(lastSceneX+" "+scene.getX()+'\n'+lastSceneY+" "+scene.getY());
+        //System.out.println(lastSceneX+" "+gameScene.getX()+'\n'+lastSceneY+" "+gameScene.getY());
 
         NOTantiMouseEvent=false;
     }
@@ -228,7 +228,7 @@ public class Game extends Application {
 
 
     //__________________________________________________________________________________________________________________
-    private class GameLoop extends Service<Void> {
+    final private class GameLoop extends Service<Void> {
         private double nearestAngelDist;
 
 
@@ -237,10 +237,10 @@ public class Game extends Application {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    player.update(keySet, maze, dSceneX);
-                    gameCamera.gameScreen(maze, player, angels);
-                    Angel.update(angels, gameCamera, maze, player);
-                    tardis.update(keySet, maze, player);
+                    player.update(keySet,dSceneX);
+                    gameCamera.gameScreen();
+                    monsters.update();
+                    tardis.update(keySet);
                     dSceneX = dSceneY = 0;
 
 
@@ -271,18 +271,18 @@ public class Game extends Application {
          *Player wins if he reaches the Tardis while it is in "Standing" state
          */
         private boolean victory(){
-            return (Maze.distanceBetween(player,tardis)<END_GAME_RANGE *2&& tardis.isHere);
+            return (maze.distanceBetween(player,tardis)<END_GAME_RANGE *2&& tardis.isHere);
         }
 
 
 
         /*
-         *Player loses if ine if the Angels catches him
+         *Player loses if ine if the Monsters catches him
          */
         private boolean defeat(){
             nearestAngelDist = Double.POSITIVE_INFINITY;
-            for (Angel angel:angels){
-                nearestAngelDist=Math.min(nearestAngelDist,Maze.distanceBetween(angel,player));
+            for (Monsters.Angel angel: monsters.angel){
+                nearestAngelDist=Math.min(nearestAngelDist,maze.distanceBetween(angel,player));
             }
             return nearestAngelDist<END_GAME_RANGE;
         }
@@ -293,7 +293,7 @@ public class Game extends Application {
 
 
     //__________________________________________________________________________________________________________________
-    private class MainMenuLoop extends Service<Void> {
+    final private class MainMenuLoop extends Service<Void> {
 
         @Override
         protected Task<Void> createTask(){
@@ -324,6 +324,9 @@ public class Game extends Application {
                 changeState(States.Exit);
             }
         }
+
+
+
     }
     //__________________________________________________________________________________________________________________
 
@@ -332,7 +335,7 @@ public class Game extends Application {
 
 
     //__________________________________________________________________________________________________________________
-    private class EndingLoop extends Service<Void>{
+    final private class EndingLoop extends Service<Void>{
 
         @Override
         protected Task<Void> createTask() {
@@ -376,7 +379,7 @@ public class Game extends Application {
 
 
     //__________________________________________________________________________________________________________________
-    private class PauseLoop extends Service<Void>{
+    final private class PauseLoop extends Service<Void>{
         private boolean onPause = false;
 
         @Override
@@ -384,16 +387,16 @@ public class Game extends Application {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    //gameCamera.gameScreen(maze,player,angels);
+                    //gameCamera.gameScreen(maze,player,monsters);
                     if (keySet.contains(KeyCode.ESCAPE)){
                         if(onPause){
                             if (changeState(States.Game)) {
-                                scene.setCursor(Cursor.NONE);
+                                gameScene.setCursor(Cursor.NONE);
                                 setMouseEventEnabled(true);
                                 onPause = false;
                             }
                         }else {
-                            scene.setCursor(Cursor.DEFAULT);
+                            gameScene.setCursor(Cursor.DEFAULT);
                             setMouseEventEnabled(false);
                             onPause=true;
                         }

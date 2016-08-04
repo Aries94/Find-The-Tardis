@@ -32,6 +32,6 @@ abstract class Resources {
     }
 
     static class Entity{
-        Maze.Coords coords;
+        Maze.Coords coords=new Maze.Coords();
     }
 }
